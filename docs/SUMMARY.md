@@ -25,8 +25,20 @@ docs/
 │   ├── permissions.md             # Role-based permission system
 │   ├── dynamic-pages.md           # Dynamic page creation system
 │   └── ai-implementation.md       # AI features implementation
-└── setup/
-    └── README.md                  # Setup and configuration guide
+├── setup/
+│   ├── README.md                  # Setup and configuration guide
+│   └── env.md                     # Environment configuration
+└── testing/
+    ├── testing-setup.md           # Testing setup and configuration
+    ├── testing-summary.md         # Overall testing strategy
+    ├── layer1-testing-updated.md  # Layer 1 testing plan
+    ├── layer2-testing-updated.md  # Layer 2 testing plan
+    ├── layer3-testing.md          # Layer 3 testing plan
+    ├── layer4-testing.md          # Layer 4 testing plan
+    ├── layer5-testing.md          # Layer 5 testing plan
+    ├── layer6-testing.md          # Layer 6 testing plan
+    ├── layer7-testing.md          # Layer 7 testing plan
+    └── layer8-testing.md          # Layer 8 testing plan
 ```
 
 ## Key Updates
@@ -59,3 +71,8 @@ docs/
 - For feature details, see the [features](./features/README.md) directory
 - For setup instructions, see the [setup](./setup/README.md) directory
   - [Environment Configuration](./setup/env.md)
+- [Implementation Plan](./implementation-plan.md)
+- For testing strategy, see the [testing](./testing/) directory
+  - [Testing Setup](./testing/testing-setup.md)
+  - [Testing Summary](./testing/testing-summary.md)
+  - Layer-specific testing plans (Layers 1-8)
