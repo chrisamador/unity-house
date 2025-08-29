@@ -6,258 +6,418 @@ This document outlines the testing approach for Phase 1 of the Unity House imple
 
 Our testing strategy follows these key principles:
 
-1. **Resemble Real Usage**: Tests focus on actual user flows and outcomes users care about
-2. **Avoid Implementation Details**: Tests query by accessible attributes, not internal structure
-3. **Balanced Test Pyramid**: Primarily integration tests, with targeted unit and E2E tests
-4. **Testing Library Principles**: Query elements as users would find them
+1. **User-Centric Testing**: Focus on testing what matters to users, not implementation details
+2. **Minimal but Effective**: Keep tests simple but ensure they verify critical functionality
+3. **Automated Where Possible**: Automate tests for core functionality to enable rapid iteration
+4. **Visual Verification**: Include visual testing for UI components
 
-## Test Coverage by Deliverable
+## Phase 1A: Project Scaffolding Tests
 
-### 1. Project Initialization
+### User Story Tests
 
-**Integration Tests:**
+**Test: User can view the Hello World page**
 
 ```typescript
-// packages/api/__tests__/app.test.ts
-import { expect, test } from "vitest";
-import { startApp } from "../src/app";
+// e2e/hello-world.spec.ts
+import { test, expect } from '@playwright/test';
 
-test("application can initialize successfully", async () => {
-  // Test real user outcome - app starts without errors
-  const app = await startApp();
+test('Hello World page loads correctly', async ({ page }) => {
+  // Visit the home page
+  await page.goto('/');
   
-  // Assert on what matters to users - app is running
-  expect(app.isRunning()).toBe(true);
+  // Verify the page contains the Hello World text
+  await expect(page.getByText('Hello World')).toBeVisible();
 });
 ```
 
-### 2. Basic Backend Setup
+## Phase 1B: Minimal Backend Tests
 
-**Integration Tests:**
+### Convex Setup Tests
 
 ```typescript
-// packages/api/convex/__tests__/users.test.ts
-import { convexTest } from "convex-test";
-import { api } from "../_generated/api";
-import schema from "../schema";
+// packages/api/__tests__/convex/setup.test.ts
+import { expect, test } from 'vitest';
+import { createClient } from '../../convex/client';
 
-test("authenticated user can retrieve their profile", async () => {
+test('Convex client can be initialized', () => {
+  const client = createClient();
+  expect(client).toBeDefined();
+});
+
+test('Convex environment variables are properly loaded', () => {
+  // This test verifies that environment variables are available
+  expect(process.env.CONVEX_URL).toBeDefined();
+});
+```
+
+### User Schema Tests
+
+```typescript
+// packages/api/__tests__/schema/user.test.ts
+import { test, expect } from 'vitest';
+import { api } from '../../convex/_generated/api';
+import { convexTest } from 'convex-test';
+import schema from '../../convex/schema';
+
+test('User schema can store and retrieve user data', async () => {
+  // Create a test client with schema
   const t = convexTest(schema);
   
-  // Setup auth as a real user would experience
-  t.withAuth({ userId: "user_123" });
-  
-  // Create test user
-  await t.mutation(api.users.createUser, { 
-    name: "Ada Lovelace", 
-    email: "ada@example.com",
-    clerkId: "user_123"
+  // Create a test user
+  const userId = await t.mutation(api.users.create, {
+    name: 'Test User',
+    email: 'test@example.com',
+    clerkId: 'clerk_123'
   });
   
-  // Test real user flow - getting profile
-  const profile = await t.query(api.users.getProfile);
+  // Retrieve the user
+  const user = await t.query(api.users.getById, { id: userId });
   
-  // Assert on what matters to users
-  expect(profile.name).toBe("Ada Lovelace");
-  expect(profile.email).toBe("ada@example.com");
-});
-
-test("unauthenticated users cannot access protected data", async () => {
-  const t = convexTest(schema);
-  
-  // Real scenario: no auth
-  
-  // Test real outcome: access denied
-  await expect(t.query(api.users.getProfile)).rejects.toThrow();
+  // Verify the user data
+  expect(user).toMatchObject({
+    name: 'Test User',
+    email: 'test@example.com',
+    clerkId: 'clerk_123'
+  });
 });
 ```
 
-### 3. Basic Frontend Setup
-
-**Component Tests:**
+### Authentication Foundation Tests
 
 ```typescript
-// packages/app/__tests__/components/AuthButton.test.tsx
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { AuthButton } from "../../components/AuthButton";
+// packages/api/__tests__/auth/utils.test.ts
+import { test, expect, vi } from 'vitest';
+import { validateAuth } from '../../convex/auth';
 
-test("sign in button redirects to sign in page", async () => {
-  // Mock navigation as a user would experience it
-  const mockNavigate = vi.fn();
-  vi.mock("@react-navigation/native", () => ({
-    useNavigation: () => ({ navigate: mockNavigate })
-  }));
+test('validateAuth rejects unauthenticated requests', async () => {
+  // Mock context with no auth
+  const mockContext = { auth: null };
   
-  // Render component
-  render(<AuthButton>Sign In</AuthButton>);
+  // Should throw error for unauthenticated request
+  await expect(validateAuth(mockContext)).rejects.toThrow();
+});
+
+test('validateAuth accepts authenticated requests', async () => {
+  // Mock context with valid auth
+  const mockContext = { auth: { userId: 'user_123' } };
   
-  // Interact as a real user
-  await userEvent.click(screen.getByRole("button", { name: /sign in/i }));
-  
-  // Assert on outcome users care about
-  expect(mockNavigate).toHaveBeenCalledWith("SignIn");
+  // Should not throw for authenticated request
+  await expect(validateAuth(mockContext)).resolves.not.toThrow();
 });
 ```
 
-### 4. User Authentication
+## Phase 1C: Minimal Frontend Tests
 
-**E2E Tests:**
+### Expo Setup Tests
+
+```typescript
+// packages/app/__tests__/app.test.tsx
+import { render } from '@testing-library/react-native';
+import App from '../App';
+
+test('App renders without crashing', () => {
+  // Mock necessary providers
+  vi.mock('../providers/ConvexProvider', () => ({
+    ConvexProvider: ({ children }) => <>{children}</>
+  }));
+  
+  // Render the app
+  const { getByTestId } = render(<App testID="app-root" />);
+  
+  // Verify it renders
+  expect(getByTestId('app-root')).toBeDefined();
+});
+```
+
+### UI Foundation Tests
+
+```typescript
+// packages/app/__tests__/components/Container.test.tsx
+import { render } from '@testing-library/react-native';
+import { Text } from 'react-native';
+import { Container } from '../../components/Container';
+
+test('Container renders children correctly', () => {
+  const { getByText } = render(
+    <Container>
+      <Text>Test Content</Text>
+    </Container>
+  );
+  
+  expect(getByText('Test Content')).toBeDefined();
+});
+```
+
+### Navigation Tests
+
+```typescript
+// packages/app/__tests__/navigation/index.test.tsx
+import { render, fireEvent } from '@testing-library/react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { HomeScreen } from '../../screens/HomeScreen';
+
+test('Home screen renders correctly', () => {
+  const { getByText } = render(
+    <NavigationContainer>
+      <HomeScreen />
+    </NavigationContainer>
+  );
+  
+  expect(getByText('Home')).toBeDefined();
+});
+```
+
+## Phase 1D: Authentication Integration Tests
+
+### Auth UI Component Tests
+
+```typescript
+// packages/app/__tests__/screens/SignIn.test.tsx
+import { render, fireEvent } from '@testing-library/react-native';
+import { SignInScreen } from '../../screens/SignInScreen';
+
+test('Sign in form validates email', async () => {
+  const { getByPlaceholderText, getByText, findByText } = render(<SignInScreen />);
+  
+  // Enter invalid email
+  fireEvent.changeText(getByPlaceholderText('Email'), 'invalid-email');
+  
+  // Submit form
+  fireEvent.press(getByText('Sign In'));
+  
+  // Check for validation message
+  expect(await findByText('Please enter a valid email')).toBeDefined();
+});
+```
+
+### Auth Flow Tests
 
 ```typescript
 // e2e/auth.spec.ts
-import { test, expect } from "@playwright/test";
+import { test, expect } from '@playwright/test';
 
-test("new user can sign up and access dashboard", async ({ page }) => {
-  // Test real user flow
-  await page.goto("/sign-up");
+test('User can sign up and access protected content', async ({ page }) => {
+  // Go to sign up page
+  await page.goto('/sign-up');
   
-  // Interact as a real user would
-  await page.getByLabel(/name/i).fill("New User");
-  await page.getByLabel(/email/i).fill("newuser@example.com");
-  await page.getByLabel(/password/i).fill("Password123!");
+  // Fill out sign up form
+  await page.getByLabel('Name').fill('Test User');
+  await page.getByLabel('Email').fill(`test-${Date.now()}@example.com`);
+  await page.getByLabel('Password').fill('Password123!');
   
-  // Submit form as a user would
-  await page.getByRole("button", { name: /sign up/i }).click();
+  // Submit form
+  await page.getByRole('button', { name: 'Sign Up' }).click();
   
-  // Assert on outcomes users care about
+  // Verify redirect to protected page
   await expect(page).toHaveURL(/\/dashboard/);
-  await expect(page.getByText(/welcome, new user/i)).toBeVisible();
+  
+  // Verify protected content is visible
+  await expect(page.getByText('Welcome')).toBeVisible();
 });
 
-test("existing user can sign in", async ({ page }) => {
-  // Test real user flow
-  await page.goto("/sign-in");
+test('User can sign in', async ({ page }) => {
+  // Go to sign in page
+  await page.goto('/sign-in');
   
-  // Interact as a real user would
-  await page.getByLabel(/email/i).fill("existing@example.com");
-  await page.getByLabel(/password/i).fill("Password123!");
-  await page.getByRole("button", { name: /sign in/i }).click();
+  // Fill out sign in form
+  await page.getByLabel('Email').fill('existing@example.com');
+  await page.getByLabel('Password').fill('Password123!');
   
-  // Assert on outcomes users care about
-  await expect(page).toHaveURL("/dashboard");
-  await expect(page.getByText(/welcome back/i)).toBeVisible();
+  // Submit form
+  await page.getByRole('button', { name: 'Sign In' }).click();
+  
+  // Verify redirect to protected page
+  await expect(page).toHaveURL(/\/dashboard/);
 });
 
-test("user can sign out", async ({ page }) => {
-  // Setup: sign in first
-  await page.goto("/sign-in");
-  await page.getByLabel(/email/i).fill("existing@example.com");
-  await page.getByLabel(/password/i).fill("Password123!");
-  await page.getByRole("button", { name: /sign in/i }).click();
-  await page.waitForURL("/dashboard");
+test('User can sign out', async ({ page }) => {
+  // Sign in first
+  await page.goto('/sign-in');
+  await page.getByLabel('Email').fill('existing@example.com');
+  await page.getByLabel('Password').fill('Password123!');
+  await page.getByRole('button', { name: 'Sign In' }).click();
   
-  // Test real user flow
-  await page.getByRole("button", { name: /account menu/i }).click();
-  await page.getByRole("menuitem", { name: /sign out/i }).click();
+  // Click sign out button
+  await page.getByRole('button', { name: 'Sign Out' }).click();
   
-  // Assert on outcomes users care about
-  await expect(page).toHaveURL("/");
+  // Verify redirect to home page
+  await expect(page).toHaveURL('/');
   
-  // Verify protection as a user would experience
-  await page.goto("/dashboard");
-  await expect(page).toHaveURL("/sign-in");
-});
-```
-
-### 5. User Profile Management
-
-**Integration Tests:**
-
-```typescript
-// packages/app/__tests__/features/profile.test.tsx
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { ProfilePage } from "../../features/profile/ProfilePage";
-
-test("user can update their profile", async () => {
-  // Mock API as needed for integration test
-  vi.mock("../../hooks/useProfile", () => ({
-    useProfile: () => ({
-      profile: { name: "Original Name", email: "user@example.com" },
-      updateProfile: vi.fn().mockResolvedValue({ success: true })
-    })
-  }));
-  
-  // Render component
-  render(<ProfilePage />);
-  
-  // Verify initial state as user would see it
-  expect(screen.getByDisplayValue("Original Name")).toBeInTheDocument();
-  
-  // Interact as a real user
-  await userEvent.clear(screen.getByLabelText(/name/i));
-  await userEvent.type(screen.getByLabelText(/name/i), "Updated Name");
-  await userEvent.click(screen.getByRole("button", { name: /save/i }));
-  
-  // Assert on outcomes users care about
-  expect(await screen.findByText(/profile updated/i)).toBeInTheDocument();
+  // Verify protected routes are no longer accessible
+  await page.goto('/dashboard');
+  await expect(page).toHaveURL('/sign-in');
 });
 ```
 
-**E2E Tests:**
+### User Creation Tests
 
 ```typescript
-// e2e/profile.spec.ts
-import { test, expect } from "@playwright/test";
+// packages/api/__tests__/users/creation.test.ts
+import { test, expect } from 'vitest';
+import { api } from '../../convex/_generated/api';
+import { convexTest } from 'convex-test';
+import schema from '../../convex/schema';
 
-test("user can view and update profile", async ({ page }) => {
-  // Setup: sign in first
-  await page.goto("/sign-in");
-  await page.getByLabel(/email/i).fill("existing@example.com");
-  await page.getByLabel(/password/i).fill("Password123!");
-  await page.getByRole("button", { name: /sign in/i }).click();
+test('User is created on first authentication', async () => {
+  const t = convexTest(schema);
   
-  // Navigate to profile
-  await page.getByRole("button", { name: /account menu/i }).click();
-  await page.getByRole("menuitem", { name: /profile/i }).click();
+  // Create authenticated test client with identity
+  const asNewUser = t.withIdentity({
+    tokenIdentifier: 'clerk:clerk_new_user',
+    name: 'New User',
+    email: 'new@example.com'
+  });
   
-  // Verify current profile
-  await expect(page.getByLabel(/name/i)).toHaveValue("Existing User");
+  // Call the onSignIn function that would be triggered by Clerk
+  await asNewUser.mutation(api.users.onSignIn);
   
-  // Update profile
-  await page.getByLabel(/name/i).fill("Updated Name");
-  await page.getByRole("button", { name: /save/i }).click();
+  // Verify user was created
+  const user = await asNewUser.query(api.users.getByClerkId, { 
+    clerkId: 'clerk_new_user' 
+  });
   
-  // Assert on outcomes users care about
-  await expect(page.getByText(/profile updated/i)).toBeVisible();
+  expect(user).toBeDefined();
+  expect(user.name).toBe('New User');
+  expect(user.email).toBe('new@example.com');
+});
+```
+
+## Phase 1E: Basic Testing Infrastructure Tests
+
+### Test Environment Setup Verification
+
+```typescript
+// packages/api/__tests__/setup.test.ts
+import { expect, test } from 'vitest';
+
+test('Vitest is configured correctly', () => {
+  expect(true).toBe(true);
+});
+
+test('Test utilities are available', () => {
+  // Import test utilities
+  const utils = require('../test/utils');
   
-  // Verify changes persist
-  await page.reload();
-  await expect(page.getByLabel(/name/i)).toHaveValue("Updated Name");
+  // Verify they exist
+  expect(utils).toBeDefined();
 });
 ```
 
 ## Test Data Setup
 
 ```typescript
-// e2e/fixtures/auth.setup.ts
-import { test as setup } from "@playwright/test";
+// e2e/fixtures/users.ts
+export const testUsers = [
+  {
+    name: 'Test User',
+    email: 'test@example.com',
+    password: 'Password123!'
+  },
+  {
+    name: 'Admin User',
+    email: 'admin@example.com',
+    password: 'AdminPass456!'
+  }
+];
+```
 
-setup("authenticate", async ({ page }) => {
-  // Create a real user session as a user would
-  await page.goto("/sign-in");
-  await page.getByLabel(/email/i).fill("test@example.com");
-  await page.getByLabel(/password/i).fill("Password123!");
-  await page.getByRole("button", { name: /sign in/i }).click();
-  
-  // Wait for authentication to complete
-  await page.waitForURL("/dashboard");
-  
-  // Store authentication state
-  await page.context().storageState({ path: "playwright/.auth/user.json" });
-});
+## Package Dependencies
+
+```json
+// package.json
+{
+  "devDependencies": {
+    "convex-test": "latest",
+    "vitest": "latest",
+    "@edge-runtime/vm": "latest"
+  }
+}
 ```
 
 ## Test Execution
 
-```bash
-# Run backend tests
-npm run test:backend
+### bun Scripts
 
-# Run frontend tests
-npm run test:frontend
-
-# Run E2E tests
-npm run test:e2e
+```json
+// package.json
+{
+  "scripts": {
+    "test": "vitest",
+    "test:once": "vitest run",
+    "test:debug": "vitest --inspect-brk --no-file-parallelism",
+    "test:coverage": "vitest run --coverage --coverage.reporter=text",
+    "test:backend": "vitest run --dir packages/api",
+    "test:frontend": "vitest run --dir packages/app",
+    "test:e2e": "playwright test"
+  }
+}
 ```
+
+### Running Tests
+
+```bash
+# Run tests in watch mode
+bun run test
+
+# Run tests once
+bun run test:once
+
+# Run tests with debugger
+bun run test:debug
+
+# Run tests with coverage report
+bun run test:coverage
+
+# Run backend tests only
+bun run test:backend
+
+# Run frontend tests only
+bun run test:frontend
+
+# Run end-to-end tests
+bun run test:e2e
+```
+
+## Vitest Configuration
+
+```typescript
+// vitest.config.mts
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    environment: "edge-runtime",
+    server: { deps: { inline: ["convex-test"] } },
+  },
+});
+```
+
+## Manual Test Checklist
+
+### Phase 1A: Project Scaffolding
+- [ ] Application can be started with a single command
+- [ ] Hello World page is visible in the browser
+- [ ] Changes to code automatically reload in the browser
+- [ ] README instructions are clear and accurate
+
+### Phase 1B: Minimal Backend
+- [ ] Convex dashboard shows the project is connected
+- [ ] User schema is visible in Convex dashboard
+- [ ] Authentication environment variables are properly loaded
+
+### Phase 1C: Minimal Frontend
+- [ ] Application renders on web browser
+- [ ] Basic styling is applied correctly
+- [ ] Navigation between screens works
+
+### Phase 1D: Authentication Integration
+- [ ] User can sign up with email/password
+- [ ] User can sign in with email/password
+- [ ] User can sign out
+- [ ] Protected routes redirect unauthenticated users to sign in
+- [ ] User profile is created in Convex on first sign-in
+
+### Phase 1E: Basic Testing
+- [ ] All test commands run successfully
+- [ ] Test coverage reports are generated
+- [ ] CI configuration runs tests automatically

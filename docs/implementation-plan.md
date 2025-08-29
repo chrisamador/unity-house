@@ -4,63 +4,139 @@ This document outlines a layered implementation approach for building Unity Hous
 
 ## Phase 1: Core Infrastructure Setup
 
-**Goal**: Set up the basic project structure and infrastructure with user authentication and profile management.
+**Goal**: Set up the basic project structure and infrastructure with minimal user authentication.
 
-1. **Project Initialization**
-   - Set up monorepo structure with packages/app and packages/api
-   - Configure environment variables with dotenv-mono and znv
-   - Set up TypeScript configuration
+### Phase 1A: Project Scaffolding
+
+1. **Basic Repository Setup**
    - Initialize Git repository with proper .gitignore
-   - Configure ESLint and Prettier for code quality
+   - Create README.md with project overview
+   - Set up basic folder structure
 
-2. **Basic Backend Setup**
-   - Initialize Convex backend
-   - Create schema for User model with fields:
+2. **Monorepo Configuration**
+   - Set up monorepo structure with packages/app and packages/api
+   - Configure package.json at root level
+   - Set up workspace configuration
+
+3. **Development Environment**
+   - Configure TypeScript (tsconfig.json)
+   - Set up ESLint and Prettier for code quality
+   - Create .env.example file with required variables
+
+**Deliverable**: A minimal working application that a user can interact with, including:
+- A single page that displays "Hello World" in the browser
+- Ability to run the application with a single command
+- README with simple setup instructions for new developers
+- Working development environment where changes reload automatically
+
+### Phase 1B: Minimal Backend
+
+1. **Convex Setup**
+   - Initialize Convex backend in packages/api
+   - Configure basic connection settings
+   - Set up development environment for Convex
+
+2. **Simple User Schema**
+   - Create minimal User model with only essential fields:
      - name: string
      - email: string
      - clerkId: string (for auth integration)
-     - createdAt: timestamp
-     - updatedAt: timestamp
-   - Set up authentication with Clerk
-   - Implement user creation on first authentication
-   - Create API endpoints for:
-     - User creation
-     - User profile retrieval
-     - User profile updates
 
-3. **Basic Frontend Setup**
-   - Initialize Expo app with Expo Router
+3. **Authentication Foundation**
+   - Set up Clerk provider
+   - Configure authentication environment variables
+   - Create simple auth utility functions
+
+**Deliverable**: A functioning backend with:
+- Initialized Convex project with proper configuration
+- Basic User schema defined in Convex
+- Authentication utilities for Clerk integration
+- Working development environment for backend services
+
+### Phase 1C: Minimal Frontend
+
+1. **Expo Project Setup**
+   - Initialize Expo app in packages/app
+   - Configure basic app settings
+   - Set up minimal dependencies
+
+2. **UI Foundation**
    - Set up NativeWind for styling
-   - Create responsive layout components
-   - Implement navigation structure with:
-     - Public routes (Home, Sign In, Sign Up)
-     - Protected routes (Dashboard, Profile)
-   - Implement authentication UI with Clerk:
-     - Sign in form
-     - Sign up form
-     - Password reset flow
-     - Email verification
-   - Create user profile page with edit functionality
+   - Create basic layout component (just a container)
+   - Set up theme constants (colors, spacing)
 
-4. **Testing Infrastructure**
-   - Set up Vitest for backend unit testing
-   - Configure Playwright for end-to-end testing
-   - Create test helpers and fixtures
-   - Implement basic test coverage for authentication flows
+3. **Simple Navigation**
+   - Set up Expo Router with minimal configuration
+   - Create a simple home screen
+   - Add a basic navigation header
 
-**Deliverable**: A working application with the following capabilities:
+**Deliverable**: A minimal but functional frontend with:
+- Working Expo application that can be run on web and mobile
+- NativeWind styling system configured
+- Basic UI components and theme constants
+- Simple navigation structure with a home screen
+- Proper integration with the monorepo structure
 
-- **User Authentication**:
-  - New users can sign up with email/password
-  - Existing users can sign in
+### Phase 1D: Authentication Integration
+
+1. **Auth UI Components**
+   - Create simple sign-in screen (email/password only)
+   - Create simple sign-up screen (minimal fields)
+   - Add basic form validation
+
+2. **Auth Flow**
+   - Connect Clerk authentication to frontend
+   - Implement protected route wrapper
+   - Create auth context provider
+
+3. **User Creation**
+   - Implement minimal user creation on first authentication
+   - Create simple API endpoint for user creation
+
+**Deliverable**: A working authentication system with:
+- Functional sign-in and sign-up screens
+- Form validation for auth inputs
+- Clerk authentication integrated with the frontend
+- Protected routes that require authentication
+- Automatic user creation in Convex on first sign-in
+- Complete authentication flow from signup to accessing protected content
+
+### Phase 1E: Basic Testing
+
+1. **Test Environment**
+   - Set up Vitest configuration
+   - Create test utilities folder
+   - Configure test scripts in package.json
+
+2. **Simple Tests**
+   - Write basic test for authentication flow
+   - Create test for user creation
+   - Set up CI configuration for tests
+
+**Deliverable**: A basic testing infrastructure with:
+- Configured Vitest for unit and integration testing
+- Test utilities and helpers for common testing tasks
+- Basic test coverage for critical authentication flows
+- Working test scripts in package.json
+- CI configuration for automated testing
+
+**Phase 1 Final Deliverable**: A minimal working application with:
+
+- **Basic Authentication**:
+  - Users can sign up with email/password
+  - Users can sign in
   - Users can sign out
-  - Password reset functionality
-  - Protected routes requiring authentication
+  - Simple protected routes
 
-- **User Profile Management**:
-  - Users can view their profile information
-  - Users can update their profile details
-  - Basic form validation for user inputs
+- **Project Foundation**:
+  - Working monorepo structure
+  - Connected frontend and backend
+  - Basic development tooling
+  
+- **Development Experience**:
+  - Local development environment
+  - Basic testing infrastructure
+  - Code quality tools configured
 
 ## Phase 2: Basic Entity Management
 
