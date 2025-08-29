@@ -2,29 +2,67 @@
 
 This document outlines a layered implementation approach for building Unity House, starting with the simplest MVP and progressively adding complexity until the full application is complete.
 
-## Layer 1: Core Infrastructure Setup
+## Phase 1: Core Infrastructure Setup
 
-**Goal**: Set up the basic project structure and infrastructure.
+**Goal**: Set up the basic project structure and infrastructure with user authentication and profile management.
 
 1. **Project Initialization**
    - Set up monorepo structure with packages/app and packages/api
    - Configure environment variables with dotenv-mono and znv
    - Set up TypeScript configuration
+   - Initialize Git repository with proper .gitignore
+   - Configure ESLint and Prettier for code quality
 
 2. **Basic Backend Setup**
    - Initialize Convex backend
-   - Create basic schema for User model
+   - Create schema for User model with fields:
+     - name: string
+     - email: string
+     - clerkId: string (for auth integration)
+     - createdAt: timestamp
+     - updatedAt: timestamp
    - Set up authentication with Clerk
+   - Implement user creation on first authentication
+   - Create API endpoints for:
+     - User creation
+     - User profile retrieval
+     - User profile updates
 
 3. **Basic Frontend Setup**
    - Initialize Expo app with Expo Router
    - Set up NativeWind for styling
-   - Create basic navigation structure
-   - Implement authentication UI with Clerk
+   - Create responsive layout components
+   - Implement navigation structure with:
+     - Public routes (Home, Sign In, Sign Up)
+     - Protected routes (Dashboard, Profile)
+   - Implement authentication UI with Clerk:
+     - Sign in form
+     - Sign up form
+     - Password reset flow
+     - Email verification
+   - Create user profile page with edit functionality
 
-**Deliverable**: A working application with user authentication and minimal UI.
+4. **Testing Infrastructure**
+   - Set up Vitest for backend unit testing
+   - Configure Playwright for end-to-end testing
+   - Create test helpers and fixtures
+   - Implement basic test coverage for authentication flows
 
-## Layer 2: Basic Entity Management
+**Deliverable**: A working application with the following capabilities:
+
+- **User Authentication**:
+  - New users can sign up with email/password
+  - Existing users can sign in
+  - Users can sign out
+  - Password reset functionality
+  - Protected routes requiring authentication
+
+- **User Profile Management**:
+  - Users can view their profile information
+  - Users can update their profile details
+  - Basic form validation for user inputs
+
+## Phase 2: Basic Entity Management
 
 **Goal**: Implement the core data models and basic CRUD operations.
 
@@ -45,7 +83,7 @@ This document outlines a layered implementation approach for building Unity Hous
 
 **Deliverable**: An application where admins can manage users, organizations, and entities with basic permissions.
 
-## Layer 3: Dynamic Page System
+## Phase 3: Dynamic Page System
 
 **Goal**: Implement the dynamic page creation and rendering system.
 
@@ -66,7 +104,7 @@ This document outlines a layered implementation approach for building Unity Hous
 
 **Deliverable**: An application where users can create and publish dynamic pages.
 
-## Layer 4: Domain Resolution and Multi-tenancy
+## Phase 4: Domain Resolution and Multi-tenancy
 
 **Goal**: Implement custom domain support and multi-tenant features.
 
@@ -87,7 +125,7 @@ This document outlines a layered implementation approach for building Unity Hous
 
 **Deliverable**: A multi-tenant application where each entity can have its own domain and branding.
 
-## Layer 5: Advanced Permissions and Workflows
+## Phase 5: Advanced Permissions and Workflows
 
 **Goal**: Implement advanced permission systems and workflows.
 
@@ -108,7 +146,7 @@ This document outlines a layered implementation approach for building Unity Hous
 
 **Deliverable**: An application with enterprise-grade permissions and workflows.
 
-## Layer 6: AI Integration
+## Phase 6: AI Integration
 
 **Goal**: Integrate AI features for content creation and enhancement.
 
@@ -129,7 +167,7 @@ This document outlines a layered implementation approach for building Unity Hous
 
 **Deliverable**: An application with AI-powered features for content creation and personalization.
 
-## Layer 7: Analytics and Reporting
+## Phase 7: Analytics and Reporting
 
 **Goal**: Add comprehensive analytics and reporting capabilities.
 
@@ -150,7 +188,7 @@ This document outlines a layered implementation approach for building Unity Hous
 
 **Deliverable**: A complete application with comprehensive analytics and reporting.
 
-## Layer 8: Integrations and Extensibility
+## Phase 8: Integrations and Extensibility
 
 **Goal**: Make the platform extensible and integrated with other services.
 
