@@ -1,5 +1,5 @@
-import { useColorScheme } from 'react-native';
 import { useMemo } from 'react';
+import { useColorScheme } from 'react-native';
 
 // Define theme types
 export type ThemeColors = {
@@ -42,7 +42,7 @@ export function useTheme(entityPrimaryColor?: string) {
         notification: '#FF4444',
       },
     };
-  }, [colorScheme, entityPrimaryColor, isDark]);
+  }, [entityPrimaryColor, isDark]);
 
   return theme;
 }

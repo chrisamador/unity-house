@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import { useColorScheme } from "react-native";
+import "../ui/styles/global.css";
 
 // This is the root layout that will be used for all routes
 export default function RootLayout() {

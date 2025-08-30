@@ -7,11 +7,11 @@ export default function Index() {
   return (
     <View className="flex-1 items-center justify-center bg-white dark:bg-black p-4">
       <Card variant="elevated" padding="large" style={{ width: '100%', maxWidth: 400 }}>
-        <Typography variant="h2" weight="bold" className="mb-2 text-center">
+        <Typography variant="h2" weight="bold" className="mb-2 text-center dark:text-white">
           Hello World
         </Typography>
         
-        <Typography variant="body" color="muted" className="mb-6 text-center">
+        <Typography variant="body" color="muted" className="mb-6 text-center dark:text-white">
           Welcome to Unity House
         </Typography>
         
