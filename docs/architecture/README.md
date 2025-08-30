@@ -3,7 +3,7 @@
 ## Tech Stack
 
 ### Core Technologies
-- **Frontend**: Expo (React Native) with Tailwind CSS for styling
+- **Frontend**: Expo (React Native) with NativeWind for styling
 - **Backend**: Convex for real-time database and backend functions
 - **Authentication**: Clerk with Google and email authentication
 - **Package Manager**: Bun
@@ -13,21 +13,22 @@
 
 ```
 unity-house/
-├── apps/
-│   ├── mobile/          # Expo mobile application
-│   └── web/             # Expo web application
-├── packages/
-│   ├── api/             # Convex backend
-│   │   └── convex/
-│   │       ├── schema.ts
-│   │       ├── users.ts
-│   │       ├── organizations.ts
-│   │       ├── entities.ts
-│   │       └── pages.ts
-│   ├── ui/              # Shared UI components
-│   └── config/          # Shared configuration
-├── bun.lockb            # Bun lockfile
-└── package.json         # Root package.json
+└── packages/
+    ├── app/             # Expo application (for mobile and web)
+    │   └── src/        # Source code directory
+    │       ├── app/     # Expo Router app directory
+    │       │   ├── (auth)/  # Authentication routes
+    │       │   ├── (tabs)/  # Main app tabs
+    │       │   └── [...]    # Other route groups
+    │       ├── components/  # App-specific components
+    │       ├── hooks/       # App-specific hooks
+    │       ├── web/         # Web-specific configuration
+    │       └── ui/          # Shared UI components
+    │           ├── components/  # Base components
+    │           ├── hooks/       # Shared hooks
+    │           └── styles/      # Shared styles
+    ├── api/             # Convex backend
+    └── config/          # Shared configuration
 ```
 
 ## Architecture Diagrams

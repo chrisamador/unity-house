@@ -1,0 +1,16 @@
+{
+  "name": "@unity-house/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "convex dev",
+    "deploy": "convex deploy"
+  },
+  "dependencies": {
+    "convex": "^1.9.0"
+  },
+  "devDependencies": {
+    "convex-test": "latest",
+    "typescript": "^5.3.3"
+  }
+}

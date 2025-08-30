@@ -1,0 +1,37 @@
+{
+  "name": "unity-house",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A modern web platform for Greek organizations",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "cd packages/app && bun run web",
+    "dev:app": "cd packages/app && bun run web",
+    "dev:api": "cd packages/api && bun run dev",
+    "build": "echo \"Error: no build script specified\" && exit 1",
+    "start": "cd packages/app && bun run web",
+    "test": "vitest run",
+    "test:once": "vitest run",
+    "test:debug": "vitest --inspect-brk --no-file-parallelism",
+    "test:coverage": "vitest run --coverage --coverage.reporter=text",
+    "test:backend": "vitest run --dir packages/api",
+    "test:frontend": "vitest run --dir packages/app",
+    "test:e2e": "playwright test",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "vitest": "^1.2.1",
+    "@edge-runtime/vm": "^3.1.7",
+    "@playwright/test": "^1.41.2",
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "bun": ">=1.0.0"
+  }
+}

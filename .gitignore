@@ -1,0 +1,93 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+bun.lockb
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.output/
+.expo/
+web-build/
+
+# Environment variables
+.env
+.env.local
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local.backup
+
+# Debug logs
+npm-debug.log*
+npm-debug.*
+yarn-debug.log*
+yarn-debug.*
+yarn-error.log*
+yarn-error.*
+bun-debug.log*
+bun-error.log*
+
+# Editor directories and files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Convex
+convex/_generated/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+
+# Metro
+.metro-health-check*
+
+# macOS
+.DS_Store
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+
+# TypeScript
+*.tsbuildinfo
+
+# Project specific
+app-example
+
+# Playwright
+playwright-report
+test-results

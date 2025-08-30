@@ -10,7 +10,7 @@ export default defineSchema({
     firstName: v.string(),
     lastName: v.optional(v.string()),
     school: v.string(),
-    graduationDate: v.date(),
+    graduationDate: v.string(),
     // Member type: admin, leadership, brother, public
     memberType: v.union(
       v.literal("admin"),
