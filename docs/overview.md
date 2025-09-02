@@ -37,7 +37,8 @@ Unity House is a platform designed for Greek organizations to manage their chapt
    - Real-time notifications and messaging
 
 7. **Authentication & Security**
-   - Secure authentication with Clerk
-   - Google OAuth and email authentication
+   - Secure authentication with WorkOS
+   - Google OAuth, email authentication, and Enterprise SSO
    - Fine-grained permission system
    - Domain-based entity resolution
+   - Organization-based access control

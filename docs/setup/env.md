@@ -31,10 +31,11 @@ The actual environment variables are stored in a `.env.local` file at the projec
 Example `.env.local`:
 
 ```
-# Authentication (Clerk)
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
-CLERK_SECRET_KEY=sk_...
-EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
+# Authentication (WorkOS)
+NEXT_PUBLIC_WORKOS_CLIENT_ID=client_...
+WORKOS_API_KEY=sk_...
+WORKOS_REDIRECT_URI=http://localhost:3000/api/auth/callback
+EXPO_PUBLIC_WORKOS_CLIENT_ID=client_...
 
 # Backend (Convex)
 CONVEX_DEPLOYMENT=...
@@ -174,10 +175,11 @@ export const env = parseEnv(process.env, {
 # Copy to .env.local and fill in values
 # DO NOT add sensitive values to this template file
 
-# Authentication (Clerk)
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-CLERK_SECRET_KEY=
-EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=
+# Authentication (WorkOS)
+NEXT_PUBLIC_WORKOS_CLIENT_ID=
+WORKOS_API_KEY=
+WORKOS_REDIRECT_URI=http://localhost:3000/api/auth/callback
+EXPO_PUBLIC_WORKOS_CLIENT_ID=
 
 # Frontend Configuration
 FRONTEND_WEB_DOMAIN=localhost:3000

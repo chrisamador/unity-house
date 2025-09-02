@@ -10,7 +10,7 @@ The User schema is defined in `packages/api/convex/schema.ts` and includes:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `clerkId` | `string` | Clerk user ID for linking with auth system |
+| `workosId` | `string` | WorkOS user ID for linking with auth system |
 | `firstName` | `string` | User's first name |
 | `lastName` | `string?` | User's last name (optional) |
 | `school` | `string` | Educational institution name |
@@ -23,7 +23,7 @@ The User schema is defined in `packages/api/convex/schema.ts` and includes:
 
 ## Indexes
 
-- `by_clerk_id`: Index on `clerkId` for quick lookups by Clerk ID
+- `by_workos_id`: Index on `workosId` for quick lookups by WorkOS ID
 - `by_member_type`: Index on `memberType` for filtering users by role
 
 ## Approval Process
@@ -36,7 +36,7 @@ All users, particularly brothers, need to be approved by a leadership member or 
 
 ## Authentication
 
-User authentication is handled by Clerk. The `clerkId` field links the Convex user record with the Clerk authentication system.
+User authentication is handled by WorkOS. The `workosId` field links the Convex user record with the WorkOS authentication system.
 
 ## Implementation
 

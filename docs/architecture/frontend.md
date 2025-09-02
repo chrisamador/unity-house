@@ -10,7 +10,7 @@ Unity House uses Expo for cross-platform development, targeting iOS, Android, an
 - **Routing**: Expo Router (file-based routing)
 - **Styling**: NativeWind (Tailwind CSS for React Native)
 - **State Management**: React Query with Convex SDK
-- **Authentication**: Clerk React and Clerk Expo
+- **Authentication**: WorkOS React and WorkOS React Native
 - **UI Components**: Custom component library in packages/ui
 
 ## Directory Structure

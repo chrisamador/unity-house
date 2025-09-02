@@ -2,7 +2,7 @@
 
 ## Overview
 
-Unity House uses Clerk for authentication, providing a secure and feature-rich authentication experience across web and mobile platforms. The authentication system integrates with Convex for backend authorization and user management.
+Unity House uses WorkOS for authentication, providing a secure and feature-rich authentication experience across web and mobile platforms. The authentication system integrates with Convex for backend authorization and user management.
 
 ## Features
 
@@ -11,8 +11,8 @@ Unity House uses Clerk for authentication, providing a secure and feature-rich a
   - Google OAuth
   - (Expandable to other OAuth providers)
 - **Cross-platform Support**:
-  - Web authentication via Clerk React
-  - Mobile authentication via Clerk Expo
+  - Web authentication via WorkOS React SDK
+  - Mobile authentication via WorkOS Mobile SDK
 - **User Approval Workflow**:
   - New users start with pending status
   - Leadership or admin approval required
@@ -26,56 +26,54 @@ Authentication configuration is stored in environment variables:
 
 ```
 # Web environment variables
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
-CLERK_SECRET_KEY=sk_...
+NEXT_PUBLIC_WORKOS_CLIENT_ID=client_...
+WORKOS_API_KEY=sk_...
+WORKOS_REDIRECT_URI=http://localhost:3000/api/auth/callback
 
 # Mobile environment variables
-EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
+EXPO_PUBLIC_WORKOS_CLIENT_ID=client_...
 ```
 
 ### Web Authentication
 
-Web authentication is implemented using Clerk React:
+Web authentication is implemented using WorkOS React:
 
 ```typescript
 // Implementation in apps/web/app/_layout.tsx
-import { ClerkProvider, SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react';
+import { WorkOSProvider, useUser, useSignIn } from '@workos/react';
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-      <SignedIn>{children}</SignedIn>
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
-    </ClerkProvider>
+    <WorkOSProvider clientId={process.env.NEXT_PUBLIC_WORKOS_CLIENT_ID}>
+      <AuthGuard>{children}</AuthGuard>
+    </WorkOSProvider>
   );
 }
 ```
 
 ### Mobile Authentication
 
-Mobile authentication is implemented using Clerk Expo:
+Mobile authentication is implemented using WorkOS React Native:
 
 ```typescript
 // Implementation in apps/mobile/app/_layout.tsx
-import { ClerkProvider } from '@clerk/clerk-expo';
+import { WorkOSProvider } from '@workos/react-native';
 import * as SecureStore from 'expo-secure-store';
 
 // SecureStore implementation for token storage
-const tokenCache = {
+const tokenStorage = {
   getToken: (key) => SecureStore.getItemAsync(key),
   saveToken: (key, value) => SecureStore.setItemAsync(key, value),
 };
 
 export default function RootLayout() {
   return (
-    <ClerkProvider 
-      publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}
-      tokenCache={tokenCache}
+    <WorkOSProvider 
+      clientId={process.env.EXPO_PUBLIC_WORKOS_CLIENT_ID}
+      tokenStorage={tokenStorage}
     >
       {/* App content */}
-    </ClerkProvider>
+    </WorkOSProvider>
   );
 }
 ```
@@ -83,7 +81,7 @@ export default function RootLayout() {
 ### Authentication Flow
 
 1. **User Registration**:
-   - User signs up with email/password or OAuth
+   - User signs up with email/password, OAuth, or SSO
    - User completes profile information
    - User record created in Convex with `approvedBy: null`
 
@@ -96,10 +94,11 @@ export default function RootLayout() {
    - Protected routes require authentication
    - Role-based access control for specific features
    - Permission checks for entity-specific actions
+   - Organization-based access control via WorkOS Organizations
 
 ### Convex Integration
 
-Clerk integrates with Convex for backend authorization:
+WorkOS integrates with Convex for backend authorization:
 
 ```typescript
 // Implementation in packages/api/convex/auth.ts
@@ -117,7 +116,7 @@ export const getUser = query({
 
     const user = await ctx.db
       .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
+      .withIndex("by_workos_id", (q) => q.eq("workosId", identity.subject))
       .first();
     
     return user;
@@ -141,7 +140,7 @@ export const createUser = mutation({
     // Check if user already exists
     const existingUser = await ctx.db
       .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
+      .withIndex("by_workos_id", (q) => q.eq("workosId", identity.subject))
       .first();
     
     if (existingUser) {
@@ -150,7 +149,7 @@ export const createUser = mutation({
 
     // Create new user (initially unapproved)
     return await ctx.db.insert("users", {
-      clerkId: identity.subject,
+      workosId: identity.subject,
       firstName: args.firstName,
       lastName: args.lastName,
       school: args.school,
@@ -184,7 +183,7 @@ export const approveUser = mutation({
     // Check if approver is admin or leadership
     const approver = await ctx.db
       .query("users")
-      .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
+      .withIndex("by_workos_id", (q) => q.eq("workosId", identity.subject))
       .first();
     
     if (!approver || !["admin", "leadership"].includes(approver.memberType)) {
@@ -208,3 +207,4 @@ export const approveUser = mutation({
 - **CSRF Protection**: Built-in protection against cross-site request forgery
 - **OAuth Security**: PKCE flow for mobile OAuth
 - **Permission Validation**: Backend validation of all permission changes
+- **Enterprise SSO**: Support for SAML, OIDC, and other enterprise authentication protocols via WorkOS

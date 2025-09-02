@@ -131,7 +131,7 @@ export const testUsers = [
   {
     name: "Admin User",
     email: "admin@example.com",
-    clerkId: "user_admin123",
+    workosId: "wos_admin123",
   },
   // ...more test users
 ];

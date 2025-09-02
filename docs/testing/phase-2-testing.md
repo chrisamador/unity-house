@@ -21,14 +21,14 @@ test("admin can approve a user", async () => {
   const adminId = await t.mutation(api.users.createUser, { 
     name: "Admin User", 
     email: "admin@example.com",
-    clerkId: "admin_id"
+    workosId: "admin_id"
   });
   
   // Create a pending user
   const pendingUserId = await t.mutation(api.users.createUser, { 
     name: "Pending User", 
     email: "pending@example.com",
-    clerkId: "pending_id"
+    workosId: "pending_id"
   });
   
   // Admin approves the user
@@ -49,14 +49,14 @@ test("regular user cannot approve another user", async () => {
   const regularUserId = await t.mutation(api.users.createUser, { 
     name: "Regular User", 
     email: "regular@example.com",
-    clerkId: "regular_id"
+    workosId: "regular_id"
   });
   
   // Create a pending user
   const pendingUserId = await t.mutation(api.users.createUser, { 
     name: "Pending User", 
     email: "pending@example.com",
-    clerkId: "pending_id"
+    workosId: "pending_id"
   });
   
   // Regular user tries to approve another user
@@ -83,7 +83,7 @@ test("user can create an organization", async () => {
   const userId = await t.mutation(api.users.createUser, { 
     name: "Test User", 
     email: "test@example.com",
-    clerkId: "user_id"
+    workosId: "user_id"
   });
   
   // Create an organization
@@ -114,7 +114,7 @@ test("organization admin can add members", async () => {
   const adminId = await t.mutation(api.users.createUser, { 
     name: "Admin User", 
     email: "admin@example.com",
-    clerkId: "admin_id"
+    workosId: "admin_id"
   });
   
   // Create an organization
@@ -127,7 +127,7 @@ test("organization admin can add members", async () => {
   const memberId = await t.mutation(api.users.createUser, { 
     name: "Member User", 
     email: "member@example.com",
-    clerkId: "member_id"
+    workosId: "member_id"
   });
   
   // Add member to organization
@@ -163,7 +163,7 @@ test("organization admin can create an entity", async () => {
   const adminId = await t.mutation(api.users.createUser, { 
     name: "Admin User", 
     email: "admin@example.com",
-    clerkId: "admin_id"
+    workosId: "admin_id"
   });
   
   // Create an organization
@@ -198,7 +198,7 @@ test("organization member cannot create an entity", async () => {
   const adminId = await t.mutation(api.users.createUser, { 
     name: "Admin User", 
     email: "admin@example.com",
-    clerkId: "admin_id"
+    workosId: "admin_id"
   });
   
   const orgId = await t.mutation(api.organizations.create, {
@@ -210,7 +210,7 @@ test("organization member cannot create an entity", async () => {
   const memberId = await t.mutation(api.users.createUser, { 
     name: "Member User", 
     email: "member@example.com",
-    clerkId: "member_id"
+    workosId: "member_id"
   });
   
   // Add member to organization
@@ -434,7 +434,7 @@ export async function setupTestOrganization(t) {
   const adminId = await t.mutation(api.users.createUser, { 
     name: "Admin User", 
     email: "admin@example.com",
-    clerkId: "admin_id"
+    workosId: "admin_id"
   });
   
   // Create an organization
@@ -451,7 +451,7 @@ export async function setupTestMember(t, orgId) {
   const memberId = await t.mutation(api.users.createUser, { 
     name: "Member User", 
     email: "member@example.com",
-    clerkId: "member_id"
+    workosId: "member_id"
   });
   
   // Add member to organization

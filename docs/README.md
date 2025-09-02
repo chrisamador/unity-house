@@ -14,7 +14,7 @@ This documentation is split into multiple files for better organization and read
    - [Entity](./data-models/entity.md) - Entity model (chapters, boards, etc.)
    - [Page](./data-models/page.md) - Dynamic page content model
 4. [Features](./features/README.md) - Detailed feature documentation
-   - [Authentication](./features/authentication.md) - Authentication with Clerk
+   - [Authentication](./features/authentication.md) - Authentication with WorkOS
    - [Permissions](./features/permissions.md) - Role-based permission system
    - [Dynamic Pages](./features/dynamic-pages.md) - Dynamic page creation system
 5. [Setup & Configuration](./setup/README.md) - Project setup and configuration

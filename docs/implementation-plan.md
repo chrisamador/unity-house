@@ -40,17 +40,17 @@ This document outlines a layered implementation approach for building Unity Hous
    - Create minimal User model with only essential fields:
      - name: string
      - email: string
-     - clerkId: string (for auth integration)
+     - workosId: string (for auth integration)
 
 3. **Authentication Foundation**
-   - Set up Clerk provider
+   - Set up WorkOS provider
    - Configure authentication environment variables
    - Create simple auth utility functions
 
 **Deliverable**: A functioning backend with:
 - Initialized Convex project with proper configuration
 - Basic User schema defined in Convex
-- Authentication utilities for Clerk integration
+- Authentication utilities for WorkOS integration
 - Working development environment for backend services
 
 ### Phase 1C: Minimal Frontend
@@ -85,7 +85,7 @@ This document outlines a layered implementation approach for building Unity Hous
    - Add basic form validation
 
 2. **Auth Flow**
-   - Connect Clerk authentication to frontend
+   - Connect WorkOS authentication to frontend
    - Implement protected route wrapper
    - Create auth context provider
 
@@ -96,7 +96,7 @@ This document outlines a layered implementation approach for building Unity Hous
 **Deliverable**: A working authentication system with:
 - Functional sign-in and sign-up screens
 - Form validation for auth inputs
-- Clerk authentication integrated with the frontend
+- WorkOS authentication integrated with the frontend
 - Protected routes that require authentication
 - Automatic user creation in Convex on first sign-in
 - Complete authentication flow from signup to accessing protected content

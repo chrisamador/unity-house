@@ -5,7 +5,7 @@
 ### Core Technologies
 - **Frontend**: Expo (React Native) with NativeWind for styling
 - **Backend**: Convex for real-time database and backend functions
-- **Authentication**: Clerk with Google and email authentication
+- **Authentication**: WorkOS with Enterprise SSO and email authentication
 - **Package Manager**: Bun
 - **Project Structure**: Monorepo
 

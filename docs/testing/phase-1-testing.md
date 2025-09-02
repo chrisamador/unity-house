@@ -67,7 +67,7 @@ test('User schema can store and retrieve user data', async () => {
   const userId = await t.mutation(api.users.create, {
     name: 'Test User',
     email: 'test@example.com',
-    clerkId: 'clerk_123'
+    workosId: 'wos_123'
   });
   
   // Retrieve the user
@@ -77,7 +77,7 @@ test('User schema can store and retrieve user data', async () => {
   expect(user).toMatchObject({
     name: 'Test User',
     email: 'test@example.com',
-    clerkId: 'clerk_123'
+    workosId: 'wos_123'
   });
 });
 ```
@@ -263,17 +263,17 @@ test('User is created on first authentication', async () => {
   
   // Create authenticated test client with identity
   const asNewUser = t.withIdentity({
-    tokenIdentifier: 'clerk:clerk_new_user',
+    tokenIdentifier: 'workos:wos_new_user',
     name: 'New User',
     email: 'new@example.com'
   });
   
-  // Call the onSignIn function that would be triggered by Clerk
+  // Call the onSignIn function that would be triggered by WorkOS
   await asNewUser.mutation(api.users.onSignIn);
   
   // Verify user was created
-  const user = await asNewUser.query(api.users.getByClerkId, { 
-    clerkId: 'clerk_new_user' 
+  const user = await asNewUser.query(api.users.getByWorkOSId, { 
+    workosId: 'wos_new_user' 
   });
   
   expect(user).toBeDefined();

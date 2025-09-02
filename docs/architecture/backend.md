@@ -8,7 +8,7 @@ Unity House uses Convex as its backend platform, providing a real-time database,
 
 - **Database**: Convex (document-based NoSQL)
 - **Functions**: Convex serverless functions (TypeScript)
-- **Authentication**: Clerk with Convex integration
+- **Authentication**: WorkOS with Convex integration
 - **File Storage**: Convex file storage
 
 ## Directory Structure
@@ -78,7 +78,7 @@ Mutation functions modify data in the database:
 
 All data access is secured through permission checks:
 
-1. Authentication via Clerk integration
+1. Authentication via WorkOS integration
 2. Permission middleware for function execution
 3. Role-based access control for entities and pages
 4. Audit logging for permission changes
@@ -139,13 +139,15 @@ The backend implements consistent error handling:
 - Detailed error messages for debugging
 - Error logging for monitoring
 
-## Integration with Clerk
+## Integration with WorkOS
 
-Authentication is handled through Clerk integration:
+Authentication is handled through WorkOS integration:
 
 - User identity verification
 - Role-based access control
 - Session management
 - OAuth providers (Google, etc.)
+- Enterprise SSO (SAML, OIDC)
+- Organization-based access control
 
 For detailed authentication information, see the [Authentication](../features/authentication.md) documentation.

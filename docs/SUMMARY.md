@@ -21,7 +21,7 @@ docs/
 │   └── permission.md              # Permission model
 ├── features/
 │   ├── README.md                  # Features overview
-│   ├── authentication.md          # Authentication with Clerk
+│   ├── authentication.md          # Authentication with WorkOS
 │   ├── permissions.md             # Role-based permission system
 │   ├── dynamic-pages.md           # Dynamic page creation system
 │   └── ai-implementation.md       # AI features implementation
