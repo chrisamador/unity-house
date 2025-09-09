@@ -2,36 +2,40 @@ import { Button } from '@/ui/components/Button';
 
 import { Image, View } from 'react-native';
 import { Card } from '../ui/components/Card';
-import { Typography } from '../ui/components/Typography';
+import { TextStyled } from '../ui/components/Text';
 
 import { useAuth } from '@/context/auth';
 import { api } from '@unity-house/api/convex/_generated/api';
 import { useConvexAuth, useQuery } from 'convex/react';
 
-export default function Index() {
+import { HomeScreen } from '@/app-screen/home';
+
+export default HomeScreen;
+
+function Index() {
   const { state, actions } = useAuth();
   const user = state.useGetState(s => s);
 
   return (
     <View className="flex-1 items-center justify-center bg-white dark:bg-black p-4">
       <Card variant="elevated" padding="large" style={{ width: '100%', maxWidth: 400 }}>
-        <Typography variant="body" color="muted" className="mb-6 text-center dark:text-white">
+        <TextStyled variant="body" color="muted" className="mb-6 text-center dark:text-white">
           Welcome to Unity House 
-        </Typography>
+        </TextStyled>
 
         <ProfileImage />
-        <Typography>{user.status}</Typography>
-        {user.status === 'loading' && <Typography variant="body" color="muted" className="mb-6 text-center text-gray-400">Loading...</Typography>}
-        {user.status === 'error' && <Typography variant="body" color="muted" className="mb-6 text-center text-gray-400">{user.message}</Typography>}
+        <TextStyled>{user.status}</TextStyled>
+        {user.status === 'loading' && <TextStyled variant="body" color="muted" className="mb-6 text-center text-gray-400">Loading...</TextStyled>}
+        {user.status === 'error' && <TextStyled variant="body" color="muted" className="mb-6 text-center text-gray-400">{user.message}</TextStyled>}
 
         {user.status === 'loaded' ? (
-          <Typography variant="body" color="muted" className="mb-6 text-center text-gray-400">
+          <TextStyled variant="body" color="muted" className="mb-6 text-center text-gray-400">
             You are signed in {user.user.email}
-          </Typography>
+          </TextStyled>
         ) : (
-          <Typography variant="body" color="muted" className="mb-6 text-center text-gray-400">
+          <TextStyled variant="body" color="muted" className="mb-6 text-center text-gray-400">
             You are NOT signed in
-          </Typography>
+          </TextStyled>
         )}
         {user.status === 'loaded' ? (
           <Button variant="primary" onPress={() => actions.signOut()}>
@@ -69,9 +73,9 @@ const user = useQuery(api.user.queries.whoAmI)
 const {isAuthenticated, isLoading} = useConvexAuth();
 
   return (
-    <Typography variant="h2" weight="bold" className="mb-2 text-center dark:text-white">
+    <TextStyled variant="h2" weight="bold" className="mb-2 text-center dark:text-white">
       Hello World {user?.subject ?? "Unknown"} {isAuthenticated ? "Authenticated" : "Not Authenticated"} {isLoading ? "Loading" : "Not Loading"}
-    </Typography>
+    </TextStyled>
   );
 }
 

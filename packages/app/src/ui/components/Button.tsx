@@ -31,9 +31,9 @@ export function Button({
   const getVariantStyles = () => {
     switch (variant) {
       case "primary":
-        return "bg-blue-500 border-transparent";
+        return "bg-primary-900 border-transparent";
       case "secondary":
-        return "bg-green-500 border-transparent";
+        return "bg-primary-500 border-transparent";
       case "outline":
         return "bg-transparent border-blue-500";
       case "ghost":
@@ -46,6 +46,7 @@ export function Button({
   const getTextStyles = () => {
     switch (variant) {
       case "primary":
+        return "text-primary-400";
       case "secondary":
         return "text-white";
       case "outline":

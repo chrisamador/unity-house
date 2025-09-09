@@ -7,12 +7,13 @@ interface TypographyProps extends TextProps {
   color?: "default" | "primary" | "secondary" | "error" | "success" | "warning" | "muted";
 }
 
-export function Typography({
+export function TextStyled({
   children,
   variant = "body",
   weight = "normal",
   color = "default",
   style,
+  className = "",
   ...props
 }: TypographyProps) {
   const getVariantStyles = () => {
@@ -39,42 +40,42 @@ export function Typography({
   const getWeightStyles = () => {
     switch (weight) {
       case "normal":
-        return "font-normal";
+        return "font-montserrat-regular";
       case "medium":
-        return "font-medium";
+        return "font-montserrat-medium";
       case "semibold":
-        return "font-semibold";
+        return "font-montserrat-semibold";
       case "bold":
-        return "font-bold";
+        return "font-montserrat-bold";
       default:
-        return "font-normal";
+        return "font-montserrat-regular";
     }
   };
 
   const getColorStyles = () => {
     switch (color) {
       case "default":
-        return "text-black dark:text-white";
+        return "text-black";
       case "primary":
-        return "text-blue-500 dark:text-blue-400";
+        return "text-white";
       case "secondary":
-        return "text-green-500 dark:text-green-400";
+        return "text-green-500";
       case "error":
-        return "text-red-500 dark:text-red-400";
+        return "text-red-500";
       case "success":
-        return "text-green-500 dark:text-green-400";
+        return "text-green-500";
       case "warning":
-        return "text-yellow-500 dark:text-yellow-400";
+        return "text-yellow-500";
       case "muted":
-        return "text-gray-300 dark:text-gray-400";
+        return "text-gray-300";
       default:
-        return "text-red-500 dark:text-white";
+        return "text-red-500";
     }
   };
 
   return (
     <Text
-      className={`${getVariantStyles()} ${getWeightStyles()} ${getColorStyles()}`}
+      className={`${getVariantStyles()} ${getWeightStyles()} ${getColorStyles()} ${className}`}
       style={style}
       {...props}
     >

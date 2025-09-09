@@ -2,8 +2,12 @@ import { AuthProvider, useAuth } from '@/context/auth';
 import { LoadedAuthStateType } from '@/context/auth/types';
 import { ConvexProviderWithAuth, ConvexReactClient } from 'convex/react';
 import { Stack } from 'expo-router';
-import { useCallback } from 'react';
-import { useColorScheme } from 'react-native';
+import Head from 'expo-router/head';
+import { useCallback, useEffect } from 'react';
+import { Platform, StatusBar } from 'react-native';
+
+import { useAppFonts } from '@/hooks/use-app-fonts';
+import * as SplashScreen from 'expo-splash-screen';
 import { clientSafeEnv } from '../env';
 import '../ui/styles/global.css';
 const convex = new ConvexReactClient(clientSafeEnv.EXPO_PUBLIC_CONVEX_DEPLOYMENT_URL, {
@@ -24,19 +28,46 @@ const convex = new ConvexReactClient(clientSafeEnv.EXPO_PUBLIC_CONVEX_DEPLOYMENT
   // }
 });
 
+// Have status bar text white
+StatusBar.setBarStyle('light-content');
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+
+
 // This is the root layout that will be used for all routes
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+    // Load fonts using the useAppFonts hook
+    const fontsLoaded = useAppFonts();
+
+    useEffect(() => {
+  
+      // Hide splash screen when fonts are loaded
+      async function hideSplashScreen() {
+        if (fontsLoaded) {
+          try {
+            await SplashScreen.hideAsync();
+          } catch (error) {
+            console.error(new Error(`Error hiding splash screen: ${error}`));
+          }
+        }
+      }
+  
+      hideSplashScreen();
+    }, [fontsLoaded]);
 
   return (
     <AuthProvider convex={convex}>
       <ConvexProviderWithAuthContext>
+        {Platform.OS === 'web' && (
+          <Head>
+            <title>{clientSafeEnv.EXPO_PUBLIC_WEBSITE_TITLE}</title>
+          </Head>
+        )}
         <Stack
           screenOptions={{
+            title: 'Unity House',
             headerShown: false,
-            contentStyle: {
-              backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
-            },
           }}
         />
       </ConvexProviderWithAuthContext>
@@ -69,21 +100,7 @@ function useAuthContext() {
           sealedSession: !!authState.sealedSession,
           forceRefreshToken,
         });
-        // convex.action(api.auth.actions.getAccessToken, {
-        //   sealedSession: authState.sealedSession,
-        //   forceRefreshToken,
-        // }).then((token) => {
-        //   console.log('fetchAccessToken success', {
-        //     newToken: !!token,
-        //   });
-        // }).catch((error) => {
-        //   console.log('fetchAccessToken error', error);
-        // });
-        // const tokenRes  = await convex.action(api.auth.actions.getAccessToken, {
-        //   sealedSession: authState.sealedSession,
-        //   forceRefreshToken,
-        // })
-        // console.log({ tokenRes });
+       
         const url = `${clientSafeEnv.EXPO_PUBLIC_CONVEX_SITE_URL}/auth/at`;
         console.log({ url });
         const res = await fetch(url, {
@@ -96,6 +113,10 @@ function useAuthContext() {
             forceRefreshToken,
           }),
         });
+
+        if(!res.ok){
+          throw new Error('Failed to get access token');
+        }
 
         const data = (await res.json()) as {
           accessToken: LoadedAuthStateType['accessToken'] | null;
@@ -116,11 +137,17 @@ function useAuthContext() {
           return {
             status: 'error',
             message: 'Failed to get access token',
-          }
+          };
         });
         return data.accessToken ?? null;
       } catch (error) {
         console.log('fetchAccessToken error', error);
+        state.setState(() => {
+          return {
+            status: 'error',
+            message: 'Failed to get access token',
+          };
+        });
         return null;
       }
     },
