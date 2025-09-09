@@ -2,7 +2,6 @@ import { api } from '@unity-house/api/convex/_generated/api';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 
-
 import { clientSafeEnv } from '@/env';
 import { deviceStorage } from '@/lib/deviceStorage';
 import { base64Decode, base64Encode } from '@/utils/base64';
@@ -18,12 +17,14 @@ export function createAuthActions(deps: DepType) {
   async function handleStartAuthSession({
     provider,
     screenHint,
+    callbackPath,
   }: {
     provider: ProviderType;
     screenHint: 'sign-up' | 'sign-in';
+    callbackPath: string;
   }) {
     deps.state.setState(() => ({ status: 'loading' }));
-    const code = await startAuthSession({ provider, screenHint });
+    const code = await startAuthSession({ provider, screenHint, callbackPath });
     console.log('handleStartAuthSession', { code });
     if (!code) {
       deps.state.setState(() => ({ status: 'error', message: 'Failed to get code' }));
@@ -57,7 +58,11 @@ export function createAuthActions(deps: DepType) {
         const accessToken = await deviceStorage.get('at');
         const sealedSession = await deviceStorage.get('ss');
 
-        console.log('bootstrap', { user: !!user, accessToken: !!accessToken, sealedSession: !!sealedSession });
+        console.log('bootstrap', {
+          user: !!user,
+          accessToken: !!accessToken,
+          sealedSession: !!sealedSession,
+        });
 
         if (accessToken && user && sealedSession) {
           console.log('[bootstrap] Loading access token');
@@ -116,13 +121,25 @@ export function createAuthActions(deps: DepType) {
         console.log(error);
       }
     },
-    async signIn(provider: ProviderType = 'authkit') {
+    async signIn({
+      provider = 'authkit',
+      callbackPath = '/auth/callback',
+    }: {
+      provider: ProviderType;
+      callbackPath?: string;
+    }) {
       console.log('signIn');
-      await handleStartAuthSession({ provider, screenHint: 'sign-in' });
+      await handleStartAuthSession({ provider, screenHint: 'sign-in', callbackPath });
     },
-    async signUp(provider: ProviderType = 'authkit') {
+    async signUp({
+      provider = 'authkit',
+      callbackPath = '/auth/callback',
+    }: {
+      provider: ProviderType;
+      callbackPath?: string;
+    }) {
       console.log('signUp');
-      await handleStartAuthSession({ provider, screenHint: 'sign-up' });
+      await handleStartAuthSession({ provider, screenHint: 'sign-up', callbackPath });
     },
   };
 }
@@ -142,11 +159,13 @@ async function exchangeCodeForAccessToken(deps: DepType, code: string) {
 async function startAuthSession({
   provider,
   screenHint,
+  callbackPath,
 }: {
   provider: ProviderType;
   screenHint: 'sign-up' | 'sign-in';
+  callbackPath: string;
 }) {
-  const { authUrl, redirectUri } = buildAuthorizeUrl({ provider, screenHint });
+  const { authUrl, redirectUri } = buildAuthorizeUrl({ provider, screenHint, callbackPath });
   const res = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri, {
     // Set true to prevent cookies from being saved when using Google OAuth
     preferEphemeralSession: provider === 'GoogleOAuth',
@@ -162,17 +181,19 @@ async function startAuthSession({
 function buildAuthorizeUrl({
   provider,
   screenHint,
+  callbackPath,
 }: {
   provider: ProviderType;
   screenHint: 'sign-up' | 'sign-in';
+  callbackPath: string;
 }) {
-  const redirectUri = AuthSession.makeRedirectUri({ scheme: 'unity-house', path: 'auth/callback' });
+  const redirectUri = AuthSession.makeRedirectUri({ scheme: 'unity-house', path: callbackPath });
   const params = new URLSearchParams({
     client_id: clientSafeEnv.EXPO_PUBLIC_WORKOS_CLIENT_ID,
     response_type: 'code',
     redirect_uri: redirectUri,
     provider,
-    // screen_hint: screenHint,
+    ...(provider === 'authkit' ? { screen_hint: screenHint } : {}),
   });
 
   const baseUrl = 'https://api.workos.com/user_management/authorize';

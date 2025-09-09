@@ -4,7 +4,7 @@ interface TypographyProps extends TextProps {
   children: React.ReactNode;
   variant?: "h1" | "h2" | "h3" | "h4" | "body" | "caption" | "label";
   weight?: "normal" | "medium" | "semibold" | "bold";
-  color?: "default" | "primary" | "secondary" | "error" | "success" | "warning" | "muted";
+  color?: "default" | "primary" | "secondary" | "error" | "success" | "warning" | "muted" | "white";
 }
 
 export function TextStyled({
@@ -57,6 +57,8 @@ export function TextStyled({
       case "default":
         return "text-black";
       case "primary":
+        return "text-primary-500";
+      case "white":
         return "text-white";
       case "secondary":
         return "text-green-500";

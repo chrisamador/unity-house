@@ -37,7 +37,7 @@ export function Button({
       case "secondary":
         return "bg-primary-500 border-transparent";
       case "outline":
-        return "bg-transparent border-blue-500";
+        return "bg-transparent border-primary-500";
       case "ghost":
         return "bg-transparent border-transparent";
       default:
@@ -52,9 +52,9 @@ export function Button({
       case "secondary":
         return "text-white";
       case "outline":
-        return "text-blue-500";
+        return "text-primary-500";
       case "ghost":
-        return "text-blue-500";
+        return "text-primary-500";
       default:
         return "text-white";
     }

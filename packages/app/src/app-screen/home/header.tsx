@@ -4,9 +4,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/ui/components/Button';
 
-// eslint-disable-next-line import/no-unresolved
+import { useAuth } from '@/context/auth';
 import bgImg from '@assets/images/dmvlambdas-bg.jpg';
 import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
 
 export function Header() {
   const { top } = useSafeAreaInsets();
@@ -39,25 +40,94 @@ function Slide() {
   return (
     <View className="container flex-1 justify-end">
       <View className="flex gap-4 max-w-[600px]">
-        <TextStyled variant="h1" weight="bold" color="primary">
-          Leaders of the Latino{' '}
-          <TextStyled className="whitespace-nowrap" variant="h1" weight="bold" color="primary">
-            Greek Movement
-          </TextStyled>
-        </TextStyled>
+        <Headline />
         <View className="opacity-75">
-          <TextStyled variant="h4" weight="semibold" color="primary">
-            Empowering Latino men through leadership, scholarship, brotherhood, and community
-            service
-          </TextStyled>
+          <SubHeadline />
         </View>
         <View className="items-start">
-          <Button variant="primary" size="lg" onPress={() => {}}>
-            Join Lambda
-          </Button>
+          <CallToAction />
         </View>
       </View>
     </View>
+  );
+}
+
+function Headline() {
+  const { state } = useAuth();
+  const userName = state.useGetState(s => (s.status === 'loaded' ? s.user.firstName : null));
+
+  const timeOfDay = new Date().getHours();
+  const greeting =
+    timeOfDay < 12 ? 'Good Morning' : timeOfDay < 18 ? 'Good Afternoon' : 'Good Evening';
+
+  if (userName) {
+    return (
+      <TextStyled variant="h1" weight="bold" color="white">
+        {greeting} {userName}
+      </TextStyled>
+    );
+  }
+
+  return (
+    <TextStyled variant="h1" weight="bold" color="white">
+      Leaders of the Latino{' '}
+      <TextStyled className="whitespace-nowrap" variant="h1" weight="bold" color="white">
+        Greek Movement
+      </TextStyled>
+    </TextStyled>
+  );
+}
+
+function SubHeadline() {
+  const { state } = useAuth();
+  const userName = state.useGetState(s => (s.status === 'loaded' ? s.user.firstName : null));
+
+  if (userName) {
+    return null;
+    // return (
+    //   <TextStyled variant="h4" weight="semibold" color="white">
+    //     You have 2 new updates to review
+    //   </TextStyled>
+    // );
+  }
+
+  return (
+    <TextStyled variant="h4" weight="semibold" color="white">
+      Empowering Latino men through leadership, scholarship, brotherhood, and community service
+    </TextStyled>
+  );
+}
+
+function CallToAction() {
+  const router = useRouter();
+
+  const { state } = useAuth();
+  const userName = state.useGetState(s => (s.status === 'loaded' ? s.user.firstName : null));
+
+  if (userName) {
+    return (
+      <Button
+        variant="primary"
+        size="lg"
+        onPress={() => {
+          router.navigate('/join');
+        }}
+      >
+        View Updates
+      </Button>
+    );
+  }
+
+  return (
+    <Button
+      variant="primary"
+      size="lg"
+      onPress={() => {
+        router.navigate('/join');
+      }}
+    >
+      Join Lambda
+    </Button>
   );
 }
 

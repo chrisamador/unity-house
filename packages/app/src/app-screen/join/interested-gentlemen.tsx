@@ -1,26 +1,18 @@
-import React from 'react';
-import { View, Image } from 'react-native';
 import { TextStyled } from '@/ui/components/Text';
-import { Button } from '@/ui/components/Button';
+import React from 'react';
+import { View } from 'react-native';
 
 export function InterestedGentlemen() {
   return (
-    <View className="space-y-6">
+    <View>
       {/* Hero section */}
-      <View className="bg-primary-900/10 p-6 rounded-lg">
-        <TextStyled variant="h3" weight="bold" className="mb-2">
+      <View className="bg-primary-800/10 p-6 rounded-lg">
+        <TextStyled variant="h3" color='primary' weight="bold" className="mb-2">
           Become a Lambda Man
         </TextStyled>
-        <TextStyled className="mb-4">
+        <TextStyled>
           Lambda Theta Phi Latin Fraternity, Inc. is looking for ambitious Latino men who are committed to academic excellence, leadership development, and community service.
         </TextStyled>
-        <Button 
-          variant="primary" 
-          onPress={() => {}} 
-          className="self-start"
-        >
-          Contact Us
-        </Button>
       </View>
 
       {/* Requirements section */}
@@ -99,13 +91,7 @@ export function InterestedGentlemen() {
         <TextStyled className="mb-4">
           Contact our Recruitment Chair to learn more about upcoming events and how to get involved with Lambda Theta Phi.
         </TextStyled>
-        <Button 
-          variant="primary" 
-          onPress={() => {}} 
-          className="self-start"
-        >
-          Contact Recruitment Chair
-        </Button>
+       
       </View>
     </View>
   );

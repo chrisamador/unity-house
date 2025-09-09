@@ -84,16 +84,16 @@ function SignInButton() {
 
   return (
     <View className="flex flex-col gap-2">
-      <Button variant="primary" onPress={() => actions.signIn()}>
+      <Button variant="primary" onPress={() => actions.signIn({provider: 'authkit'})}>
         Sign In
       </Button>
-      <Button variant="secondary" onPress={() => actions.signUp()}>
+      <Button variant="secondary" onPress={() => actions.signUp({provider: 'authkit'})}>
         Sign Up
       </Button>
-      <Button variant="outline" onPress={() => actions.signIn('GoogleOAuth')}>
+      <Button variant="outline" onPress={() => actions.signIn({provider: 'GoogleOAuth'})}>
         Sign In with Google
       </Button>
-      <Button variant="outline" onPress={() => actions.signIn('MicrosoftOAuth')}>
+      <Button variant="outline" onPress={() => actions.signIn({provider: 'MicrosoftOAuth'})}>
         Sign In with Microsoft
       </Button>
       <Button variant="ghost" onPress={() => actions.signOut()}>
