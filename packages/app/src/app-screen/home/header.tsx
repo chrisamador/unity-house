@@ -102,7 +102,7 @@ function CallToAction() {
   const router = useRouter();
 
   const { state } = useAuth();
-  const userName = state.useGetState(s => (s.status === 'loaded' ? s.user.firstName : null));
+  const userName = state.useGetState(s => s.status === 'loaded');
 
   if (userName) {
     return (
@@ -110,10 +110,10 @@ function CallToAction() {
         variant="primary"
         size="lg"
         onPress={() => {
-          router.navigate('/join');
+          router.navigate('/profile');
         }}
       >
-        View Updates
+        View Profile
       </Button>
     );
   }

@@ -5,13 +5,9 @@ import React from 'react';
 import { View } from 'react-native';
 
 export function ForBrothers() {
-  const { state, actions } = useAuth();
-
-  const user = state.useGetState(s => s);
-
   return (
     <View className="space-y-6">
-      <View>
+      <View className="p-6 rounded-lg">
         <TextStyled variant="h3" weight="bold" className="mb-2">
           Brother Registration
         </TextStyled>
@@ -21,11 +17,20 @@ export function ForBrothers() {
         </TextStyled>
       </View>
 
-      <View className="flex-1 bg-primary-800/10 items-center justify-center p-6 rounded-lg gap-4">
-        {user.status === 'loading' && <Loading />}
-        {user.status === 'loaded' && <LoggedIn />}
-        {(user.status === 'error' || user.status === 'idle') && <SignUp />}
-      </View>
+      <JoinCTAs />
+    </View>
+  );
+}
+
+export function JoinCTAs() {
+  const { state } = useAuth();
+
+  const user = state.useGetState(s => s);
+  return (
+    <View className="flex-1 bg-primary-800/10 items-center justify-center p-6 rounded-lg gap-4">
+      {user.status === 'loading' && <Loading />}
+      {user.status === 'loaded' && <LoggedIn />}
+      {(user.status === 'error' || user.status === 'idle') && <SignUp />}
     </View>
   );
 }

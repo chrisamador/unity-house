@@ -1,16 +1,17 @@
 import { TextStyled } from '@/ui/components/Text';
 import Feather from '@expo/vector-icons/Feather';
 import { Link } from 'expo-router';
+import React from 'react';
 import { Pressable, View } from 'react-native';
 
-export function Events() {
+export function Updates() {
   return (
     <View className="container py-8">
       <View className="flex-row justify-between items-center mb-6">
         <TextStyled variant="h2" weight="bold">
-          Events
+          Updates
         </TextStyled>
-        <Link href="/events">
+        <Link href="/updates">
           <View className="flex-row items-center">
             <TextStyled color="primary" weight="semibold" className="mr-1">View All</TextStyled>
             <Feather name="arrow-right" size={16} color="#49291B" />
@@ -18,42 +19,41 @@ export function Events() {
         </Link>
       </View>
       
-      
       <View className="md:flex-wrap md:flex-row gap-6">
-        <EventCard 
-          title="Fall 2025 Lambda Week" 
-          date="Sep 15-19, 2025" 
-          location="Student Union Building"
-          description="Join us for our Fall 2025 Lambda Week! Meet the brothers and learn about our fraternity's values and traditions."
+        <UpdateCard 
+          title="National Convention Recap" 
+          date="Sep 8, 2025"
+          category="National"
+          description="Highlights from our annual national convention including new initiatives and leadership announcements."
         />
         
-        <EventCard 
-          title="Community Service: Park Cleanup" 
-          date="Sep 22, 2025" 
-          location="Riverside Park"
-          description="Help us make a difference in our community by participating in our monthly park cleanup event."
+        <UpdateCard 
+          title="Chapter Achievement Award" 
+          date="Sep 5, 2025"
+          category="Recognition"
+          description="Our chapter has been recognized for outstanding academic achievement and community service."
         />
         
-        <EventCard 
-          title="Professional Development Workshop" 
-          date="Oct 5, 2025" 
-          location="Business School, Room 203"
-          description="Resume building and interview preparation workshop with alumni professionals."
+        <UpdateCard 
+          title="New Member Orientation" 
+          date="Aug 30, 2025"
+          category="Chapter"
+          description="Important information for new members about upcoming orientation sessions and requirements."
         />
       </View>
     </View>
   );
 }
 
-function EventCard({ 
+function UpdateCard({ 
   title, 
   date, 
-  location, 
+  category,
   description 
 }: { 
   title: string; 
   date: string; 
-  location: string;
+  category: string;
   description: string;
 }) {
   return (
@@ -70,9 +70,9 @@ function EventCard({
       </View>
       
       <View className="flex-row items-center mb-2">
-        <Feather name="map-pin" size={14} color="#49291B" className="mr-1" />
+        <Feather name="tag" size={14} color="#49291B" className="mr-1" />
         <TextStyled variant="caption" color="muted">
-          {location}
+          {category}
         </TextStyled>
       </View>
       
@@ -83,7 +83,7 @@ function EventCard({
       <View className="flex-row justify-end">
         <View className="bg-primary-500 px-3 py-1 rounded">
           <TextStyled color="white" weight="semibold" variant="caption">
-            Learn More
+            Read More
           </TextStyled>
         </View>
       </View>
