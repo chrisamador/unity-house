@@ -1,4 +1,5 @@
 // packages/api/convex/auth.ts
+
 import { Auth } from "convex/server";
 import { ConvexError } from "convex/values";
 
@@ -10,6 +11,7 @@ import { ConvexError } from "convex/values";
  * @returns The authenticated user ID
  */
 export async function validateAuth(ctx?: { auth: Auth }) {
+  
   const identity = await ctx?.auth?.getUserIdentity()
   if (!identity) {
     throw new ConvexError("Unauthorized: Authentication required");
@@ -19,10 +21,8 @@ export async function validateAuth(ctx?: { auth: Auth }) {
   if (!userId) {
     throw new ConvexError("Unauthorized: User ID not found");
   }
-  
+  // identity.
   return identity;
 }
 
-// export function getUserId(ctx: { auth: Auth }) {
-//   return (await ctx.auth.getUserIdentity())?.subject;
-// };
+  // getAccessToken

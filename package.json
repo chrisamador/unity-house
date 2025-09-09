@@ -22,16 +22,20 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
-    "vitest": "^1.2.1",
     "@edge-runtime/vm": "^3.1.7",
     "@playwright/test": "^1.41.2",
     "@types/node": "^20.11.19",
     "@types/react": "^18.2.55",
-    "@types/react-dom": "^18.2.19"
+    "@types/react-dom": "^18.2.19",
+    "prettier": "^3.2.5",
+    "vitest": "^1.2.1"
   },
   "engines": {
     "node": ">=18.0.0",
     "bun": ">=1.0.0"
+  },
+  "dependencies": {
+    "@workos-inc/authkit-js": "^0.13.0",
+    "@workos-inc/node": "^7.69.1"
   }
 }

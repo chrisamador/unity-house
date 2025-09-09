@@ -44,8 +44,20 @@ This document outlines a layered implementation approach for building Unity Hous
 
 3. **Authentication Foundation**
    - Set up WorkOS provider
+     - Install WorkOS SDK packages (`@workos/react` for web, `@workos/react-native` for mobile)
+     - Create WorkOS application in the WorkOS dashboard
+     - Configure OAuth providers (Google, etc.) in WorkOS dashboard
+     - Set up redirect URIs for authentication callbacks
    - Configure authentication environment variables
-   - Create simple auth utility functions
+     - `NEXT_PUBLIC_WORKOS_CLIENT_ID` - Client ID for web applications
+     - `WORKOS_API_KEY` - Secret API key for server-side operations
+     - `WORKOS_REDIRECT_URI` - Authentication callback URL
+     - `EXPO_PUBLIC_WORKOS_CLIENT_ID` - Client ID for mobile applications
+   - Create auth utility functions
+     - Implement user identity verification with Convex
+     - Create user lookup by WorkOS ID
+     - Build authentication hooks for React components
+     - Implement secure token storage (HTTP-only cookies for web, SecureStore for mobile)
 
 **Deliverable**: A functioning backend with:
 - Initialized Convex project with proper configuration

@@ -88,6 +88,9 @@ expo-env.d.ts
 # Project specific
 app-example
 
+# Convex
+convex/_generated
+
 # Playwright
 playwright-report
 test-results

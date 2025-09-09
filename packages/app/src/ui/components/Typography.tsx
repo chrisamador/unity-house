@@ -66,9 +66,9 @@ export function Typography({
       case "warning":
         return "text-yellow-500 dark:text-yellow-400";
       case "muted":
-        return "text-gray-500 dark:text-gray-400";
+        return "text-gray-300 dark:text-gray-400";
       default:
-        return "text-black dark:text-white";
+        return "text-red-500 dark:text-white";
     }
   };
 
