@@ -67,7 +67,7 @@ export function TextStyled({
       case "warning":
         return "text-yellow-500";
       case "muted":
-        return "text-gray-300";
+        return "text-gray-500";
       default:
         return "text-red-500";
     }

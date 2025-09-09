@@ -6,10 +6,13 @@ import Head from 'expo-router/head';
 import { useCallback, useEffect } from 'react';
 import { Platform, StatusBar } from 'react-native';
 
+import { NavHeaderWithAnimation } from '@/app-screen/home';
+import { ScrollProvider } from '@/context/scroll';
 import { useAppFonts } from '@/hooks/use-app-fonts';
 import * as SplashScreen from 'expo-splash-screen';
 import { clientSafeEnv } from '../env';
 import '../ui/styles/global.css';
+
 const convex = new ConvexReactClient(clientSafeEnv.EXPO_PUBLIC_CONVEX_DEPLOYMENT_URL, {
   unsavedChangesWarning: false,
   // logger: {
@@ -34,43 +37,46 @@ StatusBar.setBarStyle('light-content');
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
-
 // This is the root layout that will be used for all routes
 export default function RootLayout() {
-    // Load fonts using the useAppFonts hook
-    const fontsLoaded = useAppFonts();
+  // Load fonts using the useAppFonts hook
+  const fontsLoaded = useAppFonts();
 
-    useEffect(() => {
-  
-      // Hide splash screen when fonts are loaded
-      async function hideSplashScreen() {
-        if (fontsLoaded) {
-          try {
-            await SplashScreen.hideAsync();
-          } catch (error) {
-            console.error(new Error(`Error hiding splash screen: ${error}`));
-          }
+  useEffect(() => {
+    // Hide splash screen when fonts are loaded
+    async function hideSplashScreen() {
+      if (fontsLoaded) {
+        try {
+          await SplashScreen.hideAsync();
+        } catch (error) {
+          console.error(new Error(`Error hiding splash screen: ${error}`));
         }
       }
-  
-      hideSplashScreen();
-    }, [fontsLoaded]);
+    }
+
+    hideSplashScreen();
+  }, [fontsLoaded]);
 
   return (
     <AuthProvider convex={convex}>
-      <ConvexProviderWithAuthContext>
-        {Platform.OS === 'web' && (
-          <Head>
-            <title>{clientSafeEnv.EXPO_PUBLIC_WEBSITE_TITLE}</title>
-          </Head>
-        )}
-        <Stack
-          screenOptions={{
-            title: 'Unity House',
-            headerShown: false,
-          }}
-        />
-      </ConvexProviderWithAuthContext>
+      <ScrollProvider>
+        <ConvexProviderWithAuthContext>
+          {Platform.OS === 'web' && (
+            <Head>
+              <title>{clientSafeEnv.EXPO_PUBLIC_WEBSITE_TITLE}</title>
+            </Head>
+          )}
+          <NavHeaderWithAnimation />
+          <Stack
+            screenOptions={{
+              title: 'Unity House',
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="index" options={{ animation: 'slide_from_left' }} />
+          </Stack>
+        </ConvexProviderWithAuthContext>
+      </ScrollProvider>
     </AuthProvider>
   );
 }
@@ -100,7 +106,7 @@ function useAuthContext() {
           sealedSession: !!authState.sealedSession,
           forceRefreshToken,
         });
-       
+
         const url = `${clientSafeEnv.EXPO_PUBLIC_CONVEX_SITE_URL}/auth/at`;
         console.log({ url });
         const res = await fetch(url, {
@@ -114,7 +120,7 @@ function useAuthContext() {
           }),
         });
 
-        if(!res.ok){
+        if (!res.ok) {
           throw new Error('Failed to get access token');
         }
 

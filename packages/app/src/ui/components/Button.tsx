@@ -14,6 +14,7 @@ interface ButtonProps {
   textStyle?: TextStyle;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  className?: string;
 }
 
 export function Button({
@@ -27,6 +28,7 @@ export function Button({
   textStyle,
   leftIcon,
   rightIcon,
+  className = "",
 }: ButtonProps) {
   const getVariantStyles = () => {
     switch (variant) {
@@ -90,7 +92,7 @@ export function Button({
       disabled={disabled || loading}
       className={`flex-row items-center justify-center rounded-lg border ${getSizeStyles()} ${getVariantStyles()} ${
         disabled ? "opacity-50" : ""
-      }`}
+      } ${className}`}
       style={style}
     >
       {loading ? (

@@ -9,11 +9,11 @@ export function QuickLinks() {
         <TextStyled variant="h3" weight='bold'>Quick Links</TextStyled>
       </View>
       <View className="flex md:flex-row gap-4">
-        <QuickLink href="/authorize" label="Authorize" />
-        <QuickLink href="/authorize" label="Authorize" />
-        <QuickLink href="/authorize" label="Authorize" />
-        <QuickLink href="/authorize" label="Authorize" />
-        <QuickLink href="/authorize" label="Authorize" />
+        <QuickLink href="/join" label="Join Lambda" />
+        {/* <QuickLink href="/events" label="Events" />
+        <QuickLink href="/chapters" label="Chapters" />
+        <QuickLink href="/about" label="About Us" />
+        <QuickLink href="/contact" label="Contact" /> */}
       </View>
     </View>
   );

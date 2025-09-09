@@ -1,75 +1,36 @@
 import { TextStyled } from '@/ui/components/Text';
-import Feather from '@expo/vector-icons/Feather';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/ui/components/Button';
 
-import { Logo } from '@/ui/components/Logo';
 // eslint-disable-next-line import/no-unresolved
 import bgImg from '@assets/images/dmvlambdas-bg.jpg';
 import { Image } from 'expo-image';
-import { Link } from 'expo-router';
 
 export function Header() {
   const { top } = useSafeAreaInsets();
   return (
-    <View>
-      <View
-        className="bg-primary-500"
-        style={{
-          //   paddingTop: Math.max(top, 16),
-          //   paddingBottom: 16,
-          //   borderTopLeftRadius: top,
-          //   borderTopRightRadius: top,
-          //   borderBottomLeftRadius: 8,
-          //   borderBottomRightRadius: 8,
-          overflow: 'hidden',
-        }}
-      >
-        <Background source={bgImg}>
-          <View
-            style={{ paddingTop: Math.max(top, 16), paddingBottom: 32 }}
-            className="h-[480px] web:h-[600px]"
-          >
-            <Slide />
-          </View>
-        </Background>
-      </View>
-    </View>
-  );
-}
-
-export function MenuButton() {
-  return (
-    <View className="flex-row items-center gap-2 justify-between">
-      <View className="md:hidden">
-        <Feather name="menu" size={24} color="white" />
-      </View>
-      {/* <TextStyled color="primary" variant="h3" weight="semibold">
-        {clientSafeEnv.EXPO_PUBLIC_WEBSITE_TITLE}
-      </TextStyled> */}
-      <Logo />
-      <View className="flex-row items-center gap-6">
-        <View className="hidden md:flex flex-row items-center gap-4">
-          <Link href="/authorize">
-            <TextStyled className="uppercase tracking-wide" weight="semibold" color="primary">
-              Events
-            </TextStyled>
-          </Link>
-          <Link href="/authorize">
-            <TextStyled className="uppercase tracking-wide" weight="semibold" color="primary">
-              Join
-            </TextStyled>
-          </Link>
-          <Link href="/authorize">
-            <TextStyled className="uppercase tracking-wide" weight="semibold" color="primary">
-              Login
-            </TextStyled>
-          </Link>
+    <View
+      className="bg-primary-500"
+      style={{
+        //   paddingTop: Math.max(top, 16),
+        //   paddingBottom: 16,
+        //   borderTopLeftRadius: top,
+        //   borderTopRightRadius: top,
+        //   borderBottomLeftRadius: 8,
+        //   borderBottomRightRadius: 8,
+        overflow: 'hidden',
+      }}
+    >
+      <Background source={bgImg}>
+        <View
+          style={{ paddingTop: Math.max(top, 16), paddingBottom: 32 }}
+          className="h-[480px] web:h-[600px]"
+        >
+          <Slide />
         </View>
-        <View className="h-12 w-12 bg-white rounded-full" />
-      </View>
+      </Background>
     </View>
   );
 }
@@ -86,13 +47,13 @@ function Slide() {
         </TextStyled>
         <View className="opacity-75">
           <TextStyled variant="h4" weight="semibold" color="primary">
-            Lambda Theta Phi was born to promote the spirit of brotherhood, to protect the rights of
-            Latino students...
+            Empowering Latino men through leadership, scholarship, brotherhood, and community
+            service
           </TextStyled>
         </View>
         <View className="items-start">
           <Button variant="primary" size="lg" onPress={() => {}}>
-            Join Now
+            Join Lambda
           </Button>
         </View>
       </View>
