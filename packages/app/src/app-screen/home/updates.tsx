@@ -57,7 +57,7 @@ function UpdateCard({
   description: string;
 }) {
   return (
-    <Pressable className="bg-white rounded-lg p-4 shadow-sm md:basis-1/2 md:w-1/2">
+    <Pressable className="bg-white rounded-lg p-4 shadow-sm flex-1">
       <View className="flex-row justify-between items-start">
         <TextStyled variant="h4" weight="semibold" className="flex-1">
           {title}

@@ -1,6 +1,7 @@
 import { useAuth } from '@/context/auth';
 import { Button } from '@/ui/components/Button';
 import { TextStyled } from '@/ui/components/Text';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -45,6 +46,7 @@ function Loading() {
 
 function LoggedIn() {
   const { state } = useAuth();
+  const router = useRouter();
   const email = state.useGetState(s => (s.status === 'loaded' ? s.user.email : null));
 
   return (
@@ -53,7 +55,7 @@ function LoggedIn() {
         You are logged in
       </TextStyled>
       <TextStyled>{email}</TextStyled>
-      <Button variant="primary" onPress={() => {}}>
+      <Button variant="primary" onPress={() => router.navigate('/profile')}>
         Go to Profile
       </Button>
     </>

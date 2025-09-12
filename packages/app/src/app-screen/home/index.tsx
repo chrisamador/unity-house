@@ -88,16 +88,16 @@ export function NavHeaderWithAnimation() {
     >
       <View className="container">
         <View className="flex-row items-center gap-2 justify-between">
-          <View className="md:hidden">
+          {/* <View className="md:hidden">
             <Feather name="menu" size={24} color="white" />
-          </View>
+          </View> */}
           {/* <TextStyled color="primary" variant="h3" weight="semibold">
         {clientSafeEnv.EXPO_PUBLIC_WEBSITE_TITLE}
       </TextStyled> */}
           <View className="flex-row items-center gap-2">
-            <View className="hidden md:flex p-4">
+            {/* <View className="hidden md:flex p-4">
               <Feather name="menu" size={24} color="white" />
-            </View>
+            </View> */}
             <Pressable accessibilityRole="link" onPress={() => router.navigate('/')}>
               <Logo />
             </Pressable>

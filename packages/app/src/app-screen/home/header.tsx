@@ -5,6 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '@/ui/components/Button';
 
 import { useAuth } from '@/context/auth';
+
+// eslint-disable-next-line import/no-unresolved
 import bgImg from '@assets/images/dmvlambdas-bg.jpg';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
