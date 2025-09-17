@@ -10,19 +10,26 @@ export function ProfileScreen() {
   const { top } = useSafeAreaInsets();
   const { state, actions } = useAuth();
   const user = state.useGetState(s => (s.status === 'loaded' ? s.user : null));
-
+  const isLoading = state.useGetState(s => s.status === 'loading');
+  
   return (
     <ScrollView className="flex-1 bg-white">
       <Stack.Screen options={{ title: 'My Profile' }} />
 
       {/* Header */}
-      <View className='bg-primary-500' style={{ paddingTop: top }}>
+      <View className="bg-primary-500" style={{ paddingTop: top }}>
         <View className="h-[60px] web:h-[80px]" />
       </View>
 
       {/* Content */}
       <View className="container py-6">
-        {user ? (
+        {isLoading ? (
+          <View className="flex-1 items-center justify-center">
+            <TextStyled variant="h2" weight="bold" color="primary">
+              Loading...
+            </TextStyled>
+          </View>
+        ) : user ? (
           <LoggedInProfile user={user} onSignOut={actions.signOut} />
         ) : (
           <NotLoggedInView onSignIn={() => actions.signIn({ provider: 'authkit' })} />
@@ -60,7 +67,12 @@ function LoggedInProfile({ user, onSignOut }: { user: any; onSignOut: () => void
           <FeatureItem text="Achievement badges and recognition" />
           <FeatureItem text="Communication preferences" />
         </View>
-        <TextStyled variant="h4" weight="semibold" color="muted" className="text-center italic mb-6">
+        <TextStyled
+          variant="h4"
+          weight="semibold"
+          color="muted"
+          className="text-center italic mb-6"
+        >
           Coming Soon
         </TextStyled>
         <Button variant="outline" onPress={onSignOut}>
@@ -99,9 +111,7 @@ function ProfileField({ label, value }: { label: string; value: string }) {
       <TextStyled variant="label" color="muted">
         {label}
       </TextStyled>
-      <TextStyled weight="semibold">
-        {value}
-      </TextStyled>
+      <TextStyled weight="semibold">{value}</TextStyled>
     </View>
   );
 }

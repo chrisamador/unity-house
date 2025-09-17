@@ -37,6 +37,9 @@ export function NavHeaderWithAnimation() {
   const { top } = useSafeAreaInsets();
   const router = useRouter();
   const { scrollY } = useScrollContext();
+  const { state } = useAuth();
+
+  const isLoggedIn = state.useGetState(s => s.status === 'loaded');
 
   const pathname = usePathname();
   const isHomeScreen = pathname === '/';
@@ -114,16 +117,20 @@ export function NavHeaderWithAnimation() {
                   Updates
                 </TextStyled>
               </Link>
-              <Link href="/join">
-                <TextStyled className="uppercase tracking-wide" weight="semibold" color="white">
-                  Join
-                </TextStyled>
-              </Link>
-              <Link href="/profile">
-                <TextStyled className="uppercase tracking-wide" weight="semibold" color="white">
-                  Login
-                </TextStyled>
-              </Link>
+              {!isLoggedIn && (
+                <>
+                  <Link href="/join">
+                    <TextStyled className="uppercase tracking-wide" weight="semibold" color="white">
+                      Join
+                    </TextStyled>
+                  </Link>
+                  <Link href="/profile">
+                    <TextStyled className="uppercase tracking-wide" weight="semibold" color="white">
+                      Login
+                    </TextStyled>
+                  </Link>
+                </>
+              )}
             </View>
             <Pressable accessibilityRole="link" onPress={() => router.navigate('/profile')}>
               <ProfilePreview />
@@ -139,13 +146,10 @@ function ProfilePreview() {
   const { state } = useAuth();
   const user = state.useGetState(s => (s.status === 'loaded' ? s.user : null));
 
-  if(user?.profilePictureUrl){
+  if (user?.profilePictureUrl) {
     return (
       <View className="p-2 w-[40px] h-[40px] items-center justify-center bg-white rounded-full">
-        <Image
-          source={{ uri: user.profilePictureUrl }}
-          className="w-12 h-12 rounded-full"
-        />
+        <Image source={{ uri: user.profilePictureUrl }} className="w-12 h-12 rounded-full" />
       </View>
     );
   }

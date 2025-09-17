@@ -1,10 +1,16 @@
 import { TextStyled } from '@/ui/components/Text';
 import Feather from '@expo/vector-icons/Feather';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 
 export function Updates() {
+  const router = useRouter();
+  
+  function handlePress(){
+    router.push('/updates');
+  }
+  
   return (
     <View className="container py-8">
       <View className="flex-row justify-between items-center mb-6">
@@ -25,6 +31,7 @@ export function Updates() {
           date="Sep 8, 2025"
           category="National"
           description="Highlights from our annual national convention including new initiatives and leadership announcements."
+          onPress={handlePress}
         />
         
         <UpdateCard 
@@ -32,6 +39,7 @@ export function Updates() {
           date="Sep 5, 2025"
           category="Recognition"
           description="Our chapter has been recognized for outstanding academic achievement and community service."
+          onPress={handlePress}
         />
         
         <UpdateCard 
@@ -39,6 +47,7 @@ export function Updates() {
           date="Aug 30, 2025"
           category="Chapter"
           description="Important information for new members about upcoming orientation sessions and requirements."
+          onPress={handlePress}
         />
       </View>
     </View>
@@ -49,15 +58,17 @@ function UpdateCard({
   title, 
   date, 
   category,
-  description 
+  description,
+  onPress 
 }: { 
   title: string; 
   date: string; 
   category: string;
   description: string;
+  onPress: () => void;
 }) {
   return (
-    <Pressable className="bg-white rounded-lg p-4 shadow-sm flex-1">
+    <Pressable onPress={onPress} className="bg-white rounded-lg p-4 shadow-sm flex-1">
       <View className="flex-row justify-between items-start">
         <TextStyled variant="h4" weight="semibold" className="flex-1">
           {title}

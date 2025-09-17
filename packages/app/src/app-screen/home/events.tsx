@@ -1,9 +1,13 @@
 import { TextStyled } from '@/ui/components/Text';
 import Feather from '@expo/vector-icons/Feather';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
 
 export function Events() {
+  const router = useRouter();
+  function handlePress(){
+    router.push('/events');
+  }
   return (
     <View className="container py-8">
       <View className="flex-row justify-between items-center mb-6">
@@ -25,6 +29,7 @@ export function Events() {
           date="Sep 15-19, 2025" 
           location="Student Union Building"
           description="Join us for our Fall 2025 Lambda Week! Meet the brothers and learn about our fraternity's values and traditions."
+          onPress={handlePress}
         />
         
         <EventCard 
@@ -32,6 +37,7 @@ export function Events() {
           date="Sep 22, 2025" 
           location="Riverside Park"
           description="Help us make a difference in our community by participating in our monthly park cleanup event."
+          onPress={handlePress}
         />
         
         <EventCard 
@@ -39,6 +45,7 @@ export function Events() {
           date="Oct 5, 2025" 
           location="Business School, Room 203"
           description="Resume building and interview preparation workshop with alumni professionals."
+          onPress={handlePress}
         />
       </View>
     </View>
@@ -49,15 +56,17 @@ function EventCard({
   title, 
   date, 
   location, 
-  description 
+  description, 
+  onPress 
 }: { 
   title: string; 
   date: string; 
   location: string;
   description: string;
+  onPress: () => void;
 }) {
   return (
-    <Pressable className="bg-white rounded-lg p-4 shadow-sm flex-1">
+    <Pressable onPress={onPress} className="bg-white rounded-lg p-4 shadow-sm flex-1">
       <View className="flex-row justify-between items-start">
         <TextStyled variant="h4" weight="semibold" className="flex-1">
           {title}

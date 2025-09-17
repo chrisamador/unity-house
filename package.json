@@ -37,5 +37,8 @@
   "dependencies": {
     "@workos-inc/authkit-js": "^0.13.0",
     "@workos-inc/node": "^7.69.1"
+  },
+  "patchedDependencies": {
+    "pdf-parse@1.1.1": "patches/pdf-parse@1.1.1.patch"
   }
 }

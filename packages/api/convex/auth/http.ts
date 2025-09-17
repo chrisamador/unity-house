@@ -12,7 +12,7 @@ export const getAccessToken = httpAction(async (ctx, request) => {
   const forceRefreshToken = args.forceRefreshToken;
 
   if (!sealedSession) {
-    console.log('getAccessToken', { args });
+    console.log('getAccessToken', { sealedSession: !!sealedSession, forceRefreshToken: !!forceRefreshToken });
     return new Response(JSON.stringify({ error: 'Missing sealedSession' }), {
       headers: {
         'Content-Type': 'application/json',

@@ -163,4 +163,48 @@ export default defineSchema({
     .index('by_user', ['userId'])
     .index('by_entity', ['entityId'])
     .index('by_timestamp', ['timestamp']),
+
+  // GPA Tracker - Courses table
+  courses: defineTable({
+    userId: v.id('users'),
+    courseName: v.string(),
+    courseCode: v.string(),
+    semester: v.string(),
+    year: v.number(),
+    creditHours: v.number(),
+    currentGPA: v.optional(v.number()),
+    // Syllabus-specific fields
+    syllabiFileId: v.optional(v.id('_storage')),
+    syllabiFileName: v.optional(v.string()),
+    syllabiIsProcessed: v.optional(v.boolean()),
+    syllabiUploadedAt: v.optional(v.number()),
+  })
+    .index('by_user', ['userId'])
+    .index('by_semester', ['semester', 'year'])
+    .index('by_course', ['courseCode', 'semester', 'year']),
+
+  // GPA Tracker - Assignments table
+  assignments: defineTable({
+    courseId: v.id('courses'), // Changed from syllabusId to courseId
+    userId: v.id('users'),
+    name: v.string(),
+    dueDate: v.optional(v.string()),
+    weight: v.number(), // Percentage weight (0-100)
+    category: v.optional(v.string()), // e.g., "exam", "homework", "project"
+    maxPoints: v.optional(v.number()),
+  })
+    .index('by_course', ['courseId']) // Changed from by_syllabus to by_course
+    .index('by_user', ['userId']),
+
+  // GPA Tracker - Grades table
+  grades: defineTable({
+    assignmentId: v.id('assignments'),
+    userId: v.id('users'),
+    pointsEarned: v.number(),
+    maxPoints: v.number(),
+    percentage: v.number(),
+    enteredAt: v.number(),
+  })
+    .index('by_assignment', ['assignmentId'])
+    .index('by_user', ['userId'])
 });
