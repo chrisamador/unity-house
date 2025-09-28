@@ -8,7 +8,7 @@ import { Header } from './header';
 import { QuickLinks } from './quick-links';
 import { Updates } from './updates';
 
-import { Logo } from '@/ui/components/Logo';
+import { DMVLambdasLogo, Logo } from '@/ui/components/Logo';
 
 import { useAuth } from '@/context/auth';
 import { Link, usePathname, useRouter } from 'expo-router';
@@ -102,7 +102,7 @@ export function NavHeaderWithAnimation() {
               <Feather name="menu" size={24} color="white" />
             </View> */}
             <Pressable accessibilityRole="link" onPress={() => router.navigate('/')}>
-              <Logo />
+              <DMVLambdasLogo />
             </Pressable>
           </View>
           <View className="flex-row items-center gap-6">
@@ -189,6 +189,7 @@ export function NavHeader() {
           </View>
           <Pressable accessibilityRole="link" onPress={() => router.navigate('/')}>
             <Logo />
+            <DMVLambdasLogo />
           </Pressable>
           <View className="flex-row items-center gap-6">
             <View className="hidden md:flex flex-row items-center gap-4">

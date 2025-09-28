@@ -3,7 +3,6 @@ import { v } from 'convex/values';
 import { Doc } from '../_generated/dataModel';
 import { action } from '../_generated/server';
 
-internal.user.mutations.upsertUser._returnType;
 export const exchangeCode = action({
   args: {
     code: v.string(),
